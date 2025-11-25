@@ -17,19 +17,37 @@
       box-sizing: border-box;
     }
 
-    body::before {
-      content: "";
-      position: fixed;
-      inset: 0;
-      background: url("img/sfondo_1.jpg") center/cover no-repeat fixed;
-      /* filter: blur(12px) brightness(0.5); */
-      z-index: -1;
-    }
+    /* Sfondo 1 (di base) */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: url("img/sfondo_1.jpg") center/cover no-repeat fixed;
+  z-index: -2;
+  opacity: 1;
+  transition: opacity 0.8s ease; /* durata sfumatura */
+}
 
-    /* quando aggiungiamo .bg-2 al body cambiamo sfondo */
-    body.bg-2::before{
-      background: url("img/sfondo_2.jpg") center/cover no-repeat fixed;
-    }
+/* Sfondo 2 (sopra, inizialmente nascosto) */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: url("img/sfondo_2.jpg") center/cover no-repeat fixed;
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.8s ease;
+}
+
+/* Quando clicchi il 10, aggiungiamo .bg-2 al body:
+   il primo sfondo svanisce, il secondo appare */
+body.bg-2::before {
+  opacity: 0;
+}
+
+body.bg-2::after {
+  opacity: 1;
+}
 
     body {
       margin:0;
@@ -245,27 +263,6 @@
       filter:brightness(1.05);
     }
 
-    /* Pallino speciale (appare quando si clicca il 10) */
-    .special-dot{
-      position:absolute;
-      width:18px;
-      height:18px;
-      border-radius:999px;
-      background:#facc15; /* giallo */
-      box-shadow:0 0 0 4px rgba(0,0,0,0.3);
-      top:52%;            /* posizione stimata come screenshot */
-      left:50%;
-      transform:translate(-50%, -50%) scale(0.8);
-      opacity:0;
-      pointer-events:none;
-      transition:opacity .3s ease, transform .3s ease;
-    }
-
-    .special-dot.visible{
-      opacity:1;
-      transform:translate(-50%, -50%) scale(1);
-    }
-
     /* 📱 Responsive */
     @media (max-width: 900px){
       .page-container{
@@ -382,15 +379,9 @@
           // apre il popup
           openPopup('popup'+day.day);
 
-          // se è il giorno 10 cambia sfondo e appare il pallino
-          if(day.day === 10){
-            document.body.classList.add('bg-2');
-
-            const dot = document.getElementById('specialDot');
-            if(dot){
-              dot.classList.add('visible');
-            }
-          }
+         if(day.day === 10){
+  document.body.classList.add('bg-2');
+}
         });
       }
 
