@@ -1,143 +1,101 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-  <meta charset="UTF-8">
-  <title>Benvenuto – Calendario dell'Avvento</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="UTF-8">
+<title>Calendario dell’Avvento – Seleziona Versione</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+<style>
+  /* VIDEO DI SFONDO SENZA BLUR */
+  .bg-video {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -2;
+  }
 
-    body, html {
-      height: 100%;
-      width: 100%;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      overflow: hidden;
-    }
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: system-ui, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding-top: 60px;
+    background: #ffffff00; /* trasparente */
+  }
 
-    /* 🎥 Video di sfondo */
-    #video-bg {
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      min-width: 100%;
-      min-height: 100%;
-      width: auto;
-      height: auto;
-      z-index: -2;
-      transform: translate(-50%, -50%);
-      object-fit: cover;
-      filter: blur(4px) brightness(0.85);
-    }
+  .box {
+    width: 650px;
+    background: white;
+    border-radius: 25px;
+    padding: 45px 50px;
+    box-shadow: 0 25px 60px rgba(0,0,0,0.25);
+    text-align: center;
+    z-index: 10;
+  }
 
-    /* Overlay leggero per contrasto */
-    .overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(255,255,255,0.45);
-      backdrop-filter: blur(8px);
-      z-index: -1;
-    }
+  h1 {
+    font-size: 28px;
+    margin-bottom: 8px;
+  }
 
-    /* 📦 Box centrale */
-    .center-box {
+  p.subtitle {
+    font-size: 16px;
+    color: #444;
+    margin-bottom: 25px;
+  }
+
+  .btn {
+    display: block;
+    width: 100%;
+    padding: 15px;
+    margin: 12px 0;
+    border-radius: 12px;
+    color: white;
+    font-weight: 700;
+    text-decoration: none;
+    font-size: 17px;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.15);
+    transition: transform .15s ease, filter .15s ease;
+  }
+
+  .btn:hover {
+    transform: translateY(-3px);
+    filter: brightness(1.08);
+  }
+
+  .red { background: #c62828; }
+  .green { background: #007b55; }
+
+  /* Responsive */
+  @media (max-width: 650px) {
+    .box {
       width: 90%;
-      max-width: 500px;
-      margin: auto;
-      margin-top: 60px;
-      padding: 28px 30px 36px;
-      background: rgba(255,255,255,0.85);
-      border-radius: 22px;
-      box-shadow: 0 10px 35px rgba(0,0,0,0.25);
-      backdrop-filter: blur(12px);
-      text-align: center;
-      animation: fadeIn 0.9s ease-out;
+      padding: 30px 25px;
     }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-
-    .center-box h1 {
-      font-size: 26px;
-      font-weight: 800;
-      margin-bottom: 12px;
-      color: #111;
-    }
-
-    .center-box p {
-      font-size: 16px;
-      color: #444;
-      margin-bottom: 24px;
-    }
-
-    /* 🔘 Pulsanti */
-    .buttons {
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-    }
-
-    .btn {
-      padding: 14px 18px;
-      background: #d12e2e;
-      color: #fff;
-      text-decoration: none;
-      border-radius: 12px;
-      font-size: 16px;
-      font-weight: 600;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-      transition: transform .18s ease, filter .18s ease;
-    }
-
-    .btn:hover {
-      filter: brightness(1.1);
-      transform: translateY(-2px);
-    }
-
-    .btn.alt {
-      background: #008060;
-    }
-
-    @media (max-width: 600px){
-      .center-box {
-        margin-top: 40px;
-        padding: 22px;
-      }
-      .btn {
-        font-size: 15px;
-      }
-    }
-
-  </style>
+  }
+</style>
 </head>
 <body>
 
-  <!-- 🎥 Video sfondo -->
-  <video id="video-bg" autoplay muted loop playsinline>
-    <source src="video_intro.mp4" type="video/mp4">
-  </video>
+<!-- VIDEO BACKGROUND SENZA FILTRI -->
+<video class="bg-video" autoplay muted loop playsinline>
+  <source src="video_intro.mp4" type="video/mp4">
+</video>
 
-  <!-- Overlay biancastro -->
-  <div class="overlay"></div>
+<!-- BOX CENTRALE -->
+<div class="box">
+  <h1>Benvenuto nel Calendario<br>dell’Avvento</h1>
+  <p class="subtitle">Scegli quale versione del calendario vuoi visualizzare 🎄✨</p>
 
-  <!-- 📦 Box centrale -->
-  <div class="center-box">
-    <h1>Benvenuto nel Calendario dell’Avvento</h1>
-    <p>Scegli quale versione del calendario vuoi visualizzare 🎄✨</p>
-
-    <div class="buttons">
-      <a class="btn" href="calendar.html">Calendario principale</a>
-      <a class="btn alt" href="calendar_backup.html">Calendario backup</a>
-      <a class="btn" href="calendar2.html">Versione speciale 2</a>
-      <a class="btn alt" href="calendar3.html">Versione speciale 3</a>
-    </div>
-  </div>
+  <a href="calendar.html" class="btn red">Calendario principale</a>
+  <a href="calendar_backup.html" class="btn green">Calendario backup</a>
+  <a href="calendar2.html" class="btn red">Versione speciale 2</a>
+  <a href="calendar3.html" class="btn green">Versione speciale 3</a>
+</div>
 
 </body>
 </html>
