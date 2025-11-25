@@ -176,7 +176,27 @@
       z-index:2;
     }
 
-    /* Tremolio per caselle bloccate */
+    /* ⭐ Animazione “invito” per la stella del giorno corrente */
+    @keyframes current-star-pulse {
+      0% {
+        transform: scale(1) translateY(0);
+        box-shadow: 0 0 10px rgba(250, 204, 21, 0.3);
+      }
+      50% {
+        transform: scale(1.08) translateY(-2px);
+        box-shadow: 0 0 20px rgba(250, 204, 21, 0.6);
+      }
+      100% {
+        transform: scale(1) translateY(0);
+        box-shadow: 0 0 10px rgba(250, 204, 21, 0.3);
+      }
+    }
+
+    .day-box-locked.current-day::after{
+      animation: current-star-pulse 1.6s ease-in-out infinite;
+    }
+
+    /* Tremolio per caselle bloccate (giorni futuri) */
     @keyframes shake {
       0%, 100% { transform: translateX(0); }
       20%, 60% { transform: translateX(-4px); }
@@ -342,10 +362,10 @@
       { day: 8,  imgSmall: 'img/DEC_8.jpg',  imgBig: 'img/8_BIG.jpg',  title: 'Giorno 8',  text: 'Testo del giorno 8',  link: '#', ctaLabel: 'Scopri di più',     ctaColor: '#f97316', unlockDate: '11/01/2025' },
       { day: 9,  imgSmall: 'img/DEC_9.jpg',  imgBig: 'img/9_BIG.jpg',  title: 'Giorno 9',  text: 'Testo del giorno 9',  link: '#', ctaLabel: 'Scopri di più',     ctaColor: '#ec4899', unlockDate: '11/01/2025' },
       { day: 10, imgSmall: 'img/DEC_10.jpg', imgBig: 'img/10_BIG.jpg', title: 'Giorno 10', text: 'Testo del giorno 10', link: '#', ctaLabel: 'Scopri di più',     ctaColor: '#22c55e', unlockDate: '11/25/2025' },
-      { day: 11, imgSmall: 'img/DEC_11.jpg', imgBig: 'img/11_BIG.jpg', title: 'Giorno 11', text: 'Testo del giorno 11', link: '#', ctaLabel: 'Scopri di più',     ctaColor: '#0ea5e9', unlockDate: '2025-12-11' },
+      { day: 11, imgSmall: 'img/DEC_11.jpg', imgBig: 'img/11_BIG.jpg', title: 'Giorno 11', text: 'Testo del giorno 11', link: '#', ctaLabel: 'Scopri di più',     ctaColor: '#0ea5e9', unlockDate: '11/26/2025' },
       { day: 12, imgSmall: 'img/DEC_12.jpg', imgBig: 'img/12_BIG.jpg', title: 'Giorno 12', text: 'Testo del giorno 12', link: '#', ctaLabel: 'Scopri di più',     ctaColor: '#f97316', unlockDate: '2025-12-12' },
       { day: 13, imgSmall: 'img/DEC_13.jpg', imgBig: 'img/13_BIG.jpg', title: 'Giorno 13', text: 'Testo del giorno 13', link: '#', ctaLabel: 'Scopri di più',     ctaColor: '#e11d48', unlockDate: '2025-12-13' },
-      { day: 14, imgSmall: 'img/DEC_14.jpg', imgBig: 'img/14_BIG.jpg', title: 'Giorno 14', text: 'Testo del giorno 14', link: '#', ctaLabel: 'Scopri di più',     ctaColor: '#22c55e', unlockDate: '2025-12-14' },
+      { day: 14, imgSmall: 'img/DEC_14.jpg', imgBig: 'img/14_BIG.jpg', title: 'Giorno 14', text: 'Testo del giorno 14', link: '#', ctaLabel: 'Scopri di più',     ctaColor: '#22c55e', unlockDate: '11/26/2025' },
       { day: 15, imgSmall: 'img/DEC_15.jpg', imgBig: 'img/15_BIG.jpg', title: 'Giorno 15', text: 'Testo del giorno 15', link: '#', ctaLabel: 'Scopri di più',     ctaColor: '#0ea5e9', unlockDate: '2025-12-15' },
       { day: 16, imgSmall: 'img/DEC_16.jpg', imgBig: 'img/16_BIG.jpg', title: 'Giorno 16', text: 'Testo del giorno 16', link: '#', ctaLabel: 'Scopri di più',     ctaColor: '#f97316', unlockDate: '2025-12-16' },
       { day: 17, imgSmall: 'img/DEC_17.jpg', imgBig: 'img/17_BIG.jpg', title: 'Giorno 17', text: 'Testo del giorno 17', link: '#', ctaLabel: 'Scopri di più',     ctaColor: '#22c55e', unlockDate: '2025-12-17' },
@@ -397,6 +417,7 @@
       box.className = 'day-box';
       if(day.day === 25) box.classList.add('day-box-25');
       if(isFuture || isToday) box.classList.add('day-box-locked');
+      if(isToday) box.classList.add('current-day');
 
       const img = document.createElement('img');
       img.src = day.imgSmall;
@@ -417,7 +438,7 @@
           }, 400);
         });
       } else if(isToday){
-        // Giorno di oggi: stella si "rompe" e poi si apre il popup
+        // Giorno di oggi: stella "invita", poi si rompe al click
         box.style.cursor = 'pointer';
         box.addEventListener('click', () => {
           box.classList.add('breaking');
@@ -425,6 +446,7 @@
           setTimeout(() => {
             box.classList.remove('day-box-locked');
             box.classList.remove('breaking');
+            box.classList.remove('current-day');
 
             openPopup('popup'+day.day);
 
