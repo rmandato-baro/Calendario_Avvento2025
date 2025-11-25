@@ -321,19 +321,12 @@
       // Quinta riga: 4 caselle (21–24)
       const row5 = document.createElement('div');
       row5.className = 'calendar-row grid-4';
-      for (let c = 0; c < 4; c++) {
+      for (let c = 0; c < 5; c++) {
         const day = days[index];
         row5.appendChild(createDayBox(day, false));
         index++;
       }
       container.appendChild(row5);
-
-      // Sesta riga: casella speciale grande per il 25
-      const day25 = days[index];
-      const row6 = document.createElement('div');
-      row6.className = 'calendar-row grid-1';
-      row6.appendChild(createDayBox(day25, true));
-      container.appendChild(row6);
 
       // Pop-up per tutti i giorni
       days.forEach(createPopup);
