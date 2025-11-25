@@ -176,6 +176,12 @@
       z-index:2;
     }
 
+    /* ⭐ Stella del giorno corrente con colore diverso */
+.day-box-locked.current-day::after {
+  color: #facc15 !important;   /* colore oro */
+  text-shadow: 0 0 12px rgba(250, 204, 21, 0.8);
+}
+
     /* ⭐ Animazione “invito” per la stella del giorno corrente */
     @keyframes current-star-pulse {
       0% {
