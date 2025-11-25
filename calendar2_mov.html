@@ -176,6 +176,12 @@
       z-index:2;
     }
 
+/* ⭐ Stella dorata solo per il giorno corrente */
+.day-box-locked.current-day::after {
+  color: #facc15 !important;
+  text-shadow: 0 0 12px rgba(250, 204, 21, 0.8);
+}
+    
     /* ⭐ Stella del giorno corrente con colore diverso */
 .day-box-locked.current-day::after {
   color: #facc15 !important;   /* colore oro */
