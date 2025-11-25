@@ -6,7 +6,26 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <style>
-    /* 🍬 Griglia */
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background:#fafafa;
+      padding:20px;
+      color:#222;
+    }
+
+    .page-title{
+      text-align:center;
+      margin-bottom:24px;
+      font-size:28px;
+      font-weight:700;
+    }
+
+    .calendar-wrapper{
+      max-width:1200px;
+      margin:0 auto;
+    }
+
+    /* 🍬 Griglie righe */
     .calendar-row { 
       display:grid; 
       gap:12px; 
@@ -28,6 +47,7 @@
       cursor:pointer; 
       background:#ddd;
       transition: transform .25s ease, box-shadow .25s ease;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.08);
     }
 
     .box img { 
@@ -168,62 +188,49 @@
         height:180px;
       }
     }
-
-    body {
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background:#fafafa;
-      padding:20px;
-    }
-
-    .page-title{
-      text-align:center;
-      margin-bottom:24px;
-      font-size:28px;
-      font-weight:700;
-    }
   </style>
 </head>
 <body>
 
   <h1 class="page-title">Calendario dell'Avvento</h1>
 
-  <div id="calendar"></div>
-
-  <!-- Popup container (uno per ogni giorno, creato da JS) -->
+  <div class="calendar-wrapper">
+    <div id="calendar"></div>
+  </div>
 
   <script>
     // 🔢 Config giorni
-    // Metti le tue immagini nella cartella "img/" del repo
-    // e aggiorna i percorsi sotto (small/big possono anche essere uguali)
-const days = [
-  { day: 1,  imgSmall: 'img/DEC_1.jpg',  imgBig: 'img/1_BIG.jpg',  title: 'Giorno 1',  text: 'Testo del giorno 1',  link: 'https://link1.com',  ctaLabel: 'Scopri di più',    ctaColor: '#d12e2e', unlockDate: '2025-12-01' },
-  { day: 2,  imgSmall: 'img/DEC_2.jpg',  imgBig: 'img/2_BIG.jpg',  title: 'Giorno 2',  text: 'Testo del giorno 2',  link: 'https://link2.com',  ctaLabel: 'Scopri l\'offerta', ctaColor: '#008060', unlockDate: '2025-12-02' },
-  { day: 3,  imgSmall: 'img/DEC_3.jpg',  imgBig: 'img/3_BIG.jpg',  title: 'Giorno 3',  text: 'Testo del giorno 3',  link: 'https://link3.com',  ctaLabel: 'Vai al prodotto',  ctaColor: '#d12e2e', unlockDate: '2025-12-03' },
-  { day: 4,  imgSmall: 'img/DEC_4.jpg',  imgBig: 'img/4_BIG.jpg',  title: 'Giorno 4',  text: 'Testo del giorno 4',  link: 'https://link4.com',  ctaLabel: 'Scopri di più',    ctaColor: '#d12e2e', unlockDate: '2025-12-04' },
-  { day: 5,  imgSmall: 'img/DEC_5.jpg',  imgBig: 'img/5_BIG.jpg',  title: 'Giorno 5',  text: 'Testo del giorno 5',  link: 'https://link5.com',  ctaLabel: 'Scopri di più',    ctaColor: '#d12e2e', unlockDate: '2025-12-05' },
-  { day: 6,  imgSmall: 'img/DEC_6.jpg',  imgBig: 'img/6_BIG.jpg',  title: 'Giorno 6',  text: 'Testo del giorno 6',  link: 'https://link6.com',  ctaLabel: 'Scopri di più',    ctaColor: '#d12e2e', unlockDate: '2025-12-06' },
-  { day: 7,  imgSmall: 'img/DEC_7.jpg',  imgBig: 'img/7_BIG.jpg',  title: 'Giorno 7',  text: 'Testo del giorno 7',  link: 'https://link7.com',  ctaLabel: 'Scopri di più',    ctaColor: '#d12e2e', unlockDate: '2025-12-07' },
-  { day: 8,  imgSmall: 'img/DEC_8.jpg',  imgBig: 'img/8_BIG.jpg',  title: 'Giorno 8',  text: 'Testo del giorno 8',  link: 'https://link8.com',  ctaLabel: 'Scopri di più',    ctaColor: '#d12e2e', unlockDate: '2025-12-08' },
-  { day: 9,  imgSmall: 'img/DEC_9.jpg',  imgBig: 'img/9_BIG.jpg',  title: 'Giorno 9',  text: 'Testo del giorno 9',  link: 'https://link9.com',  ctaLabel: 'Scopri di più',    ctaColor: '#d12e2e', unlockDate: '2025-12-09' },
-  { day: 10, imgSmall: 'img/DEC_10.jpg', imgBig: 'img/10_BIG.jpg', title: 'Giorno 10', text: 'Testo del giorno 10', link: 'https://link10.com', ctaLabel: 'Scopri di più',    ctaColor: '#d12e2e', unlockDate: '2025-12-10' },
-  { day: 11, imgSmall: 'img/DEC_11.jpg', imgBig: 'img/11_BIG.jpg', title: 'Giorno 11', text: 'Testo del giorno 11', link: 'https://link11.com', ctaLabel: 'Scopri di più',    ctaColor: '#d12e2e', unlockDate: '2025-12-11' },
-  { day: 12, imgSmall: 'img/DEC_12.jpg', imgBig: 'img/12_BIG.jpg', title: 'Giorno 12', text: 'Testo del giorno 12', link: 'https://link12.com', ctaLabel: 'Scopri di più',    ctaColor: '#d12e2e', unlockDate: '2025-12-12' },
-  { day: 13, imgSmall: 'img/DEC_13.jpg', imgBig: 'img/13_BIG.jpg', title: 'Giorno 13', text: 'Testo del giorno 13', link: 'https://link13.com', ctaLabel: 'Scopri di più',    ctaColor: '#d12e2e', unlockDate: '2025-12-13' },
-  { day: 14, imgSmall: 'img/DEC_14.jpg', imgBig: 'img/14_BIG.jpg', title: 'Giorno 14', text: 'Testo del giorno 14', link: 'https://link14.com', ctaLabel: 'Scopri di più',    ctaColor: '#d12e2e', unlockDate: '2025-12-14' },
-  { day: 15, imgSmall: 'img/DEC_15.jpg', imgBig: 'img/15_BIG.jpg', title: 'Giorno 15', text: 'Testo del giorno 15', link: 'https://link15.com', ctaLabel: 'Scopri di più',    ctaColor: '#d12e2e', unlockDate: '2025-12-15' },
-  { day: 16, imgSmall: 'img/DEC_16.jpg', imgBig: 'img/16_BIG.jpg', title: 'Giorno 16', text: 'Testo del giorno 16', link: 'https://link16.com', ctaLabel: 'Scopri di più',    ctaColor: '#d12e2e', unlockDate: '2025-12-16' },
-  { day: 17, imgSmall: 'img/DEC_17.jpg', imgBig: 'img/17_BIG.jpg', title: 'Giorno 17', text: 'Testo del giorno 17', link: 'https://link17.com', ctaLabel: 'Scopri di più',    ctaColor: '#d12e2e', unlockDate: '2025-12-17' },
-  { day: 18, imgSmall: 'img/DEC_18.jpg', imgBig: 'img/18_BIG.jpg', title: 'Giorno 18', text: 'Testo del giorno 18', link: 'https://link18.com', ctaLabel: 'Scopri di più',    ctaColor: '#d12e2e', unlockDate: '2025-12-18' },
-  { day: 19, imgSmall: 'img/DEC_19.jpg', imgBig: 'img/19_BIG.jpg', title: 'Giorno 19', text: 'Testo del giorno 19', link: 'https://link19.com', ctaLabel: 'Scopri di più',    ctaColor: '#d12e2e', unlockDate: '2025-12-19' },
-  { day: 20, imgSmall: 'img/DEC_20.jpg', imgBig: 'img/20_BIG.jpg', title: 'Giorno 20', text: 'Testo del giorno 20', link: 'https://link20.com', ctaLabel: 'Scopri di più',    ctaColor: '#d12e2e', unlockDate: '2025-12-20' },
-  { day: 21, imgSmall: 'img/DEC_21.jpg', imgBig: 'img/21_BIG.jpg', title: 'Giorno 21', text: 'Testo del giorno 21', link: 'https://link21.com', ctaLabel: 'Scopri di più',    ctaColor: '#d12e2e', unlockDate: '2025-12-21' },
-  { day: 22, imgSmall: 'img/DEC_22.jpg', imgBig: 'img/22_BIG.jpg', title: 'Giorno 22', text: 'Testo del giorno 22', link: 'https://link22.com', ctaLabel: 'Scopri di più',    ctaColor: '#d12e2e', unlockDate: '2025-12-22' },
-  { day: 23, imgSmall: 'img/DEC_23.jpg', imgBig: 'img/23_BIG.jpg', title: 'Giorno 23', text: 'Testo del giorno 23', link: 'https://link23.com', ctaLabel: 'Scopri di più',    ctaColor: '#d12e2e', unlockDate: '2025-12-23' },
-  { day: 24, imgSmall: 'img/DEC_24.jpg', imgBig: 'img/24_BIG.jpg', title: 'Giorno 24', text: 'Testo del giorno 24', link: 'https://link24.com', ctaLabel: 'Scopri di più',    ctaColor: '#d12e2e', unlockDate: '2025-12-24' },
-  { day: 25, imgSmall: 'img/DEC_25.jpg', imgBig: 'img/25_BIG.jpg', title: 'Giorno 25', text: 'Testo del giorno 25', link: 'https://link25.com', ctaLabel: 'Scopri il regalo', ctaColor: '#ff5a5f', unlockDate: '2025-12-25' }
-];
+    // Piccole: img/DEC_1.jpg ... DEC_25.jpg
+    // Grandi:  img/1_BIG.jpg  ... 25_BIG.jpg
+    const days = [
+      { day: 1,  imgSmall: 'img/DEC_1.jpg',  imgBig: 'img/1_BIG.jpg',  title: 'Giorno 1',  text: 'Testo del giorno 1',  link: 'https://link1.com',  ctaLabel: 'Scopri di più',      ctaColor: '#d12e2e', unlockDate: '2025-12-01' },
+      { day: 2,  imgSmall: 'img/DEC_2.jpg',  imgBig: 'img/2_BIG.jpg',  title: 'Giorno 2',  text: 'Testo del giorno 2',  link: 'https://link2.com',  ctaLabel: 'Scopri l\'offerta', ctaColor: '#008060', unlockDate: '2025-12-02' },
+      { day: 3,  imgSmall: 'img/DEC_3.jpg',  imgBig: 'img/3_BIG.jpg',  title: 'Giorno 3',  text: 'Testo del giorno 3',  link: 'https://link3.com',  ctaLabel: 'Vai al prodotto',   ctaColor: '#d12e2e', unlockDate: '2025-12-03' },
+      { day: 4,  imgSmall: 'img/DEC_4.jpg',  imgBig: 'img/4_BIG.jpg',  title: 'Giorno 4',  text: 'Testo del giorno 4',  link: 'https://link4.com',  ctaLabel: 'Scopri di più',      ctaColor: '#d12e2e', unlockDate: '2025-12-04' },
+      { day: 5,  imgSmall: 'img/DEC_5.jpg',  imgBig: 'img/5_BIG.jpg',  title: 'Giorno 5',  text: 'Testo del giorno 5',  link: 'https://link5.com',  ctaLabel: 'Scopri di più',      ctaColor: '#d12e2e', unlockDate: '2025-12-05' },
+      { day: 6,  imgSmall: 'img/DEC_6.jpg',  imgBig: 'img/6_BIG.jpg',  title: 'Giorno 6',  text: 'Testo del giorno 6',  link: 'https://link6.com',  ctaLabel: 'Scopri di più',      ctaColor: '#d12e2e', unlockDate: '2025-12-06' },
+      { day: 7,  imgSmall: 'img/DEC_7.jpg',  imgBig: 'img/7_BIG.jpg',  title: 'Giorno 7',  text: 'Testo del giorno 7',  link: 'https://link7.com',  ctaLabel: 'Scopri di più',      ctaColor: '#d12e2e', unlockDate: '2025-12-07' },
+      { day: 8,  imgSmall: 'img/DEC_8.jpg',  imgBig: 'img/8_BIG.jpg',  title: 'Giorno 8',  text: 'Testo del giorno 8',  link: 'https://link8.com',  ctaLabel: 'Scopri di più',      ctaColor: '#d12e2e', unlockDate: '2025-12-08' },
+      { day: 9,  imgSmall: 'img/DEC_9.jpg',  imgBig: 'img/9_BIG.jpg',  title: 'Giorno 9',  text: 'Testo del giorno 9',  link: 'https://link9.com',  ctaLabel: 'Scopri di più',      ctaColor: '#d12e2e', unlockDate: '2025-12-09' },
+      { day: 10, imgSmall: 'img/DEC_10.jpg', imgBig: 'img/10_BIG.jpg', title: 'Giorno 10', text: 'Testo del giorno 10', link: 'https://link10.com', ctaLabel: 'Scopri di più',      ctaColor: '#d12e2e', unlockDate: '2025-12-10' },
+      { day: 11, imgSmall: 'img/DEC_11.jpg', imgBig: 'img/11_BIG.jpg', title: 'Giorno 11', text: 'Testo del giorno 11', link: 'https://link11.com', ctaLabel: 'Scopri di più',      ctaColor: '#d12e2e', unlockDate: '2025-12-11' },
+      { day: 12, imgSmall: 'img/DEC_12.jpg', imgBig: 'img/12_BIG.jpg', title: 'Giorno 12', text: 'Testo del giorno 12', link: 'https://link12.com', ctaLabel: 'Scopri di più',      ctaColor: '#d12e2e', unlockDate: '2025-12-12' },
+      { day: 13, imgSmall: 'img/DEC_13.jpg', imgBig: 'img/13_BIG.jpg', title: 'Giorno 13', text: 'Testo del giorno 13', link: 'https://link13.com', ctaLabel: 'Scopri di più',      ctaColor: '#d12e2e', unlockDate: '2025-12-13' },
+      { day: 14, imgSmall: 'img/DEC_14.jpg', imgBig: 'img/14_BIG.jpg', title: 'Giorno 14', text: 'Testo del giorno 14', link: 'https://link14.com', ctaLabel: 'Scopri di più',      ctaColor: '#d12e2e', unlockDate: '2025-12-14' },
+      { day: 15, imgSmall: 'img/DEC_15.jpg', imgBig: 'img/15_BIG.jpg', title: 'Giorno 15', text: 'Testo del giorno 15', link: 'https://link15.com', ctaLabel: 'Scopri di più',      ctaColor: '#d12e2e', unlockDate: '2025-12-15' },
+      { day: 16, imgSmall: 'img/DEC_16.jpg', imgBig: 'img/16_BIG.jpg', title: 'Giorno 16', text: 'Testo del giorno 16', link: 'https://link16.com', ctaLabel: 'Scopri di più',      ctaColor: '#d12e2e', unlockDate: '2025-12-16' },
+      { day: 17, imgSmall: 'img/DEC_17.jpg', imgBig: 'img/17_BIG.jpg', title: 'Giorno 17', text: 'Testo del giorno 17', link: 'https://link17.com', ctaLabel: 'Scopri di più',      ctaColor: '#d12e2e', unlockDate: '2025-12-17' },
+      { day: 18, imgSmall: 'img/DEC_18.jpg', imgBig: 'img/18_BIG.jpg', title: 'Giorno 18', text: 'Testo del giorno 18', link: 'https://link18.com', ctaLabel: 'Scopri di più',      ctaColor: '#d12e2e', unlockDate: '2025-12-18' },
+      { day: 19, imgSmall: 'img/DEC_19.jpg', imgBig: 'img/19_BIG.jpg', title: 'Giorno 19', text: 'Testo del giorno 19', link: 'https://link19.com', ctaLabel: 'Scopri di più',      ctaColor: '#d12e2e', unlockDate: '2025-12-19' },
+      { day: 20, imgSmall: 'img/DEC_20.jpg', imgBig: 'img/20_BIG.jpg', title: 'Giorno 20', text: 'Testo del giorno 20', link: 'https://link20.com', ctaLabel: 'Scopri di più',      ctaColor: '#d12e2e', unlockDate: '2025-12-20' },
+      { day: 21, imgSmall: 'img/DEC_21.jpg', imgBig: 'img/21_BIG.jpg', title: 'Giorno 21', text: 'Testo del giorno 21', link: 'https://link21.com', ctaLabel: 'Scopri di più',      ctaColor: '#d12e2e', unlockDate: '2025-12-21' },
+      { day: 22, imgSmall: 'img/DEC_22.jpg', imgBig: 'img/22_BIG.jpg', title: 'Giorno 22', text: 'Testo del giorno 22', link: 'https://link22.com', ctaLabel: 'Scopri di più',      ctaColor: '#d12e2e', unlockDate: '2025-12-22' },
+      { day: 23, imgSmall: 'img/DEC_23.jpg', imgBig: 'img/23_BIG.jpg', title: 'Giorno 23', text: 'Testo del giorno 23', link: 'https://link23.com', ctaLabel: 'Scopri di più',      ctaColor: '#d12e2e', unlockDate: '2025-12-23' },
+      { day: 24, imgSmall: 'img/DEC_24.jpg', imgBig: 'img/24_BIG.jpg', title: 'Giorno 24', text: 'Testo del giorno 24', link: 'https://link24.com', ctaLabel: 'Scopri di più',      ctaColor: '#d12e2e', unlockDate: '2025-12-24' },
+      { day: 25, imgSmall: 'img/DEC_25.jpg', imgBig: 'img/25_BIG.jpg', title: 'Giorno 25', text: 'Testo del giorno 25', link: 'https://link25.com', ctaLabel: 'Scopri il regalo', ctaColor: '#ff5a5f', unlockDate: '2025-12-25' }
+    ];
 
-    // Data di oggi in formato YYYY-MM-DD
+    // Data di oggi in formato YYYY-MM-DD (dal browser)
     const todayStr = new Date().toISOString().slice(0,10);
 
     function isLocked(day) {
