@@ -44,7 +44,7 @@
 
     .calendar-wrapper{
       width:100%;
-      max-width:900px;
+      max-width:650px;
       margin:0 auto;
       position:relative;
     }
@@ -455,7 +455,7 @@
       layout.forEach(rowNumbers => {
         const row = document.createElement('div');
         row.className = 'tree-row';
-        row.style.gridTemplateColumns = 'repeat(' + rowNumbers.length + ', minmax(70px, 1fr))';
+        row.style.gridTemplateColumns = 'repeat(' + rowNumbers.length + ', auto)';
 
         rowNumbers.forEach(num => {
           const day = dayByNumber[num];
