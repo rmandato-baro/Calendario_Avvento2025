@@ -17,7 +17,7 @@
       box-sizing: border-box;
     }
 
-    /* Sfondo 1 (di base) */
+    /* Sfondo base */
     body::before {
       content: "";
       position: fixed;
@@ -28,7 +28,7 @@
       transition: opacity 0.8s ease;
     }
 
-    /* Sfondo 2 (sopra, inizialmente nascosto) */
+    /* Sfondo 2 (switch al giorno 10) */
     body::after {
       content: "";
       position: fixed;
@@ -39,20 +39,13 @@
       transition: opacity 0.8s ease;
     }
 
-    /* Quando aggiungiamo .bg-2 il secondo sfondo appare con sfumatura */
-    body.bg-2::before {
-      opacity: 0;
-    }
-
-    body.bg-2::after {
-      opacity: 1;
-    }
+    body.bg-2::before { opacity: 0; }
+    body.bg-2::after { opacity: 1; }
 
     body {
       margin:0;
       min-height:100vh;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background:#f3f4f6;
+      font-family: system-ui, sans-serif;
       color:#111827;
       display:flex;
       justify-content:center;
@@ -60,31 +53,13 @@
     }
 
     .page-container{
-      position:relative;
       max-width:1100px;
       width:100%;
       border-radius:24px;
-      box-shadow:0 18px 40px rgba(15,23,42,0.18);
       padding:24px 16px 32px;
     }
 
-    .page-title{
-      text-align:center;
-      margin:0 0 6px;
-      font-size:28px;
-      font-weight:800;
-      letter-spacing:0.05em;
-      text-transform:uppercase;
-    }
-
-    .page-subtitle{
-      text-align:center;
-      margin:0 0 24px;
-      font-size:14px;
-      color:#6b7280;
-    }
-
-    /* Griglia 5x5 */
+    /* ========== GRID ========== */
     .calendar-grid{
       display:grid;
       grid-template-columns: repeat(5, minmax(0, 1fr));
@@ -109,7 +84,6 @@
       cursor:pointer;
       transition: transform .2s ease, box-shadow .2s ease;
       border:4px solid #ffffff;
-      box-sizing:border-box;
     }
 
     .day-box img{
@@ -117,7 +91,6 @@
       height:100%;
       object-fit:cover;
       display:block;
-      transition: filter .25s ease, transform .25s ease, opacity .25s ease;
     }
 
     .day-box:hover{
@@ -129,32 +102,8 @@
       transform:scale(1.03);
     }
 
-    /* Bollino numero - se vuoi riattivarlo, togli i commenti
-    .day-badge{
-      position:absolute;
-      top:8px;
-      left:8px;
-      width:30px;
-      height:30px;
-      border-radius:999px;
-      background: radial-gradient(circle at 30% 30%, #fef3c7, #b91c1c);
-      color:#fff;
-      font-weight:700;
-      font-size:14px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      box-shadow:0 4px 10px rgba(0,0,0,0.4);
-      z-index:2;
-    } */
-
-    .day-box-25{
-      box-shadow:0 0 0 rgba(0,0,0,0);
-      border:2px solid rgba(234,179,8,0.8);
-    }
-
-    /* Bloccati: blur + stella, ma lasciamo i click per animazioni */
-    .day-box-locked{
+    /* ========== BLOCCATI ========== */
+    .day-box-locked {
       cursor:not-allowed;
     }
 
@@ -162,53 +111,49 @@
       filter: blur(3px) brightness(0.92);
     }
 
-    .day-box-locked::after{
-      content:"⭐";
+    /* ========== BADGE NUMERO ========== */
+    .day-badge{
       position:absolute;
-      inset:0;
+      top:8px;
+      left:8px;
+      width:32px;
+      height:32px;
+      background:#ffffffcc;
+      border-radius:50%;
       display:flex;
       align-items:center;
       justify-content:center;
-      font-size:34px;
-      background:linear-gradient(to bottom, rgba(15,23,42,0.2), var(--lock-bg));
-      color:#f9fafb;
-      text-shadow:0 2px 6px rgba(0,0,0,0.6);
-      z-index:2;
+      font-weight:700;
+      font-size:15px;
+      color:#111;
+      backdrop-filter: blur(5px);
+      box-shadow:0 2px 6px rgba(0,0,0,0.25);
+      z-index:3;
     }
 
-/* ⭐ Stella dorata solo per il giorno corrente */
-.day-box-locked.current-day::after {
-  color: #facc15 !important;
-  text-shadow: 0 0 12px rgba(250, 204, 21, 0.8);
-}
-    
-    /* ⭐ Stella del giorno corrente con colore diverso */
-.day-box-locked.current-day::after {
-  color: #facc15 !important;   /* colore oro */
-  text-shadow: 0 0 12px rgba(250, 204, 21, 0.8);
-}
-
-    /* ⭐ Animazione “invito” per la stella del giorno corrente */
-    @keyframes current-star-pulse {
-      0% {
-        transform: scale(1) translateY(0);
-        box-shadow: 0 0 10px rgba(250, 204, 21, 0.3);
-      }
-      50% {
-        transform: scale(1.08) translateY(-2px);
-        box-shadow: 0 0 20px rgba(250, 204, 21, 0.6);
-      }
-      100% {
-        transform: scale(1) translateY(0);
-        box-shadow: 0 0 10px rgba(250, 204, 21, 0.3);
-      }
+    /* ========== BADGE NEW (giorno corrente) ========== */
+    .day-new-badge {
+      position: absolute;
+      top: 6px;
+      right: 6px;
+      background: #facc15;
+      color: #111;
+      font-weight: 700;
+      font-size: 12px;
+      padding: 3px 7px;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+      z-index: 3;
+      animation: new-badge-pulse 1.4s infinite ease-in-out;
     }
 
-    .day-box-locked.current-day::after{
-      animation: current-star-pulse 1.6s ease-in-out infinite;
+    @keyframes new-badge-pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.15); }
+      100% { transform: scale(1); }
     }
 
-    /* Tremolio per caselle bloccate (giorni futuri) */
+    /* ========== ANIMAZIONI ========== */
     @keyframes shake {
       0%, 100% { transform: translateX(0); }
       20%, 60% { transform: translateX(-4px); }
@@ -219,23 +164,16 @@
       animation: shake 0.35s;
     }
 
-    /* Rottura della stella (oggi) */
-    @keyframes star-break {
-      0% {
-        transform: scale(1);
-        opacity: 1;
-      }
-      100% {
-        transform: scale(1.4) rotate(10deg);
-        opacity: 0;
-      }
+    @keyframes box-break {
+      0% { transform: scale(1); }
+      100% { transform: scale(1.05); }
     }
 
-    .day-box-locked.breaking::after{
-      animation: star-break 0.4s forwards;
+    .day-box.breaking {
+      animation: box-break 0.35s;
     }
 
-    /* Popup */
+    /* ========== POPUP ========== */
     .popup{
       display:none;
       position:fixed;
@@ -248,43 +186,20 @@
     }
 
     .popup-content{
-      background:rgba(255,255,255,0.96);
+      background:#ffffffee;
       border-radius:22px;
       max-width:420px;
       width:100%;
       padding:22px 20px 20px;
-      box-shadow:0 18px 40px rgba(0,0,0,0.7);
       position:relative;
       text-align:center;
     }
 
     .popup-content img{
-      width: 100%;
-      height: auto;
-      border-radius: 16px;
-      margin-bottom: 14px;
-    }
-
-    .popup-day-label{
-      font-size:13px;
-      letter-spacing:.14em;
-      text-transform:uppercase;
-      color:#6b7280;
-      margin-bottom:4px;
-    }
-
-    .popup-content h3{
-      margin:4px 0 10px;
-      font-size:20px;
-      font-weight:700;
-      color:#111827;
-    }
-
-    .popup-content p{
-      margin:0 0 18px;
-      font-size:15px;
-      line-height:1.5;
-      color:#374151;
+      width:100%;
+      height:auto;
+      border-radius:16px;
+      margin-bottom:14px;
     }
 
     .popup-close{
@@ -293,11 +208,11 @@
       right:14px;
       font-size:26px;
       cursor:pointer;
-      color:#9ca3af;
+      color:#333;
     }
 
     .popup-close:hover{
-      color:#111827;
+      color:#000;
     }
 
     .cta-button{
@@ -305,32 +220,19 @@
       padding:10px 18px;
       border-radius:999px;
       color:#fff;
-      text-decoration:none;
-      font-weight:600;
       background:var(--accent);
-      border:none;
-      transition:transform .15s ease, filter .15s ease;
+      font-weight:600;
+      text-decoration:none;
     }
 
-    .cta-button:hover{
-      transform:translateY(-1px);
-      filter:brightness(1.05);
-    }
-
-    /* Responsive */
+    /* ========== RESPONSIVE ========== */
     @media (max-width: 900px){
-      .page-container{
-        max-width:750px;
-      }
       .calendar-grid{
         grid-template-columns: repeat(4, minmax(0, 1fr));
       }
     }
 
     @media (max-width: 600px){
-      .page-container{
-        max-width:480px;
-      }
       .calendar-grid{
         grid-template-columns: repeat(3, minmax(0, 1fr));
       }
@@ -349,131 +251,104 @@
   </style>
 </head>
 <body>
-  <div class="page-container">
-    <h1 class="page-title"> </h1>
-    <p class="page-subtitle"> </p>
-    <h1 class="page-title"> </h1>
-    <p class="page-subtitle"> </p>
 
+  <div class="page-container">
     <div id="calendar" class="calendar-grid"></div>
   </div>
 
   <script>
-    // Config giorni
-    // Piccole: img/DEC_1.jpg ... img/DEC_25.jpg
-    // Grandi:  img/1_BIG.jpg  ... img/25_BIG.jpg
-    // unlockDate in formato YYYY-MM-DD
+    /* ======= GIORNI ======= */
     const days = [
-      { day: 1,  imgSmall: 'img/DEC_1.jpg',  imgBig: 'img/1_BIG.png',  title: 'Giorno 1',  text: 'Testo del giorno 1',  link: 'https://www.barocosmetics.com', ctaLabel: 'Scopri di più',     ctaColor: '#ec4899', unlockDate: '11/01/2025' },
-      { day: 2,  imgSmall: 'img/DEC_2.jpg',  imgBig: 'img/2_BIG.jpg',  title: 'Giorno 2',  text: 'Testo del giorno 2',  link: '#', ctaLabel: 'Scopri di più',     ctaColor: '#0ea5e9', unlockDate: '11/01/2025' },
-      { day: 3,  imgSmall: 'img/DEC_3.jpg',  imgBig: 'img/3_BIG.jpg',  title: 'Giorno 3',  text: 'Testo del giorno 3',  link: '#', ctaLabel: 'Scopri di più',     ctaColor: '#22c55e', unlockDate: '11/01/2025' },
-      { day: 4,  imgSmall: 'img/DEC_4.jpg',  imgBig: 'img/4_BIG.jpg',  title: 'Giorno 4',  text: 'Testo del giorno 4',  link: '#', ctaLabel: 'Scopri di più',     ctaColor: '#f97316', unlockDate: '11/01/2025' },
-      { day: 5,  imgSmall: 'img/DEC_5.jpg',  imgBig: 'img/5_BIG.jpg',  title: 'Giorno 5',  text: 'Testo del giorno 5',  link: '#', ctaLabel: 'Scopri di più',     ctaColor: '#e11d48', unlockDate: '11/01/2025' },
-      { day: 6,  imgSmall: 'img/DEC_6.jpg',  imgBig: 'img/6_BIG.jpg',  title: 'Giorno 6',  text: 'Testo del giorno 6',  link: '#', ctaLabel: 'Scopri di più',     ctaColor: '#0ea5e9', unlockDate: '11/01/2025' },
-      { day: 7,  imgSmall: 'img/DEC_7.jpg',  imgBig: 'img/6_BIG.jpg',  title: 'Giorno 7',  text: 'Testo del giorno 7',  link: '#', ctaLabel: 'Scopri di più',     ctaColor: '#22c55e', unlockDate: '11/01/2025' },
-      { day: 8,  imgSmall: 'img/DEC_8.jpg',  imgBig: 'img/8_BIG.jpg',  title: 'Giorno 8',  text: 'Testo del giorno 8',  link: '#', ctaLabel: 'Scopri di più',     ctaColor: '#f97316', unlockDate: '11/01/2025' },
-      { day: 9,  imgSmall: 'img/DEC_9.jpg',  imgBig: 'img/9_BIG.jpg',  title: 'Giorno 9',  text: 'Testo del giorno 9',  link: '#', ctaLabel: 'Scopri di più',     ctaColor: '#ec4899', unlockDate: '11/01/2025' },
-      { day: 10, imgSmall: 'img/DEC_10.jpg', imgBig: 'img/10_BIG.jpg', title: 'Giorno 10', text: 'Testo del giorno 10', link: '#', ctaLabel: 'Scopri di più',     ctaColor: '#22c55e', unlockDate: '11/25/2025' },
-      { day: 11, imgSmall: 'img/DEC_11.jpg', imgBig: 'img/11_BIG.jpg', title: 'Giorno 11', text: 'Testo del giorno 11', link: '#', ctaLabel: 'Scopri di più',     ctaColor: '#0ea5e9', unlockDate: '11/26/2025' },
-      { day: 12, imgSmall: 'img/DEC_12.jpg', imgBig: 'img/12_BIG.jpg', title: 'Giorno 12', text: 'Testo del giorno 12', link: '#', ctaLabel: 'Scopri di più',     ctaColor: '#f97316', unlockDate: '2025-12-12' },
-      { day: 13, imgSmall: 'img/DEC_13.jpg', imgBig: 'img/13_BIG.jpg', title: 'Giorno 13', text: 'Testo del giorno 13', link: '#', ctaLabel: 'Scopri di più',     ctaColor: '#e11d48', unlockDate: '2025-12-13' },
-      { day: 14, imgSmall: 'img/DEC_14.jpg', imgBig: 'img/14_BIG.jpg', title: 'Giorno 14', text: 'Testo del giorno 14', link: '#', ctaLabel: 'Scopri di più',     ctaColor: '#22c55e', unlockDate: '11/26/2025' },
-      { day: 15, imgSmall: 'img/DEC_15.jpg', imgBig: 'img/15_BIG.jpg', title: 'Giorno 15', text: 'Testo del giorno 15', link: '#', ctaLabel: 'Scopri di più',     ctaColor: '#0ea5e9', unlockDate: '2025-12-15' },
-      { day: 16, imgSmall: 'img/DEC_16.jpg', imgBig: 'img/16_BIG.jpg', title: 'Giorno 16', text: 'Testo del giorno 16', link: '#', ctaLabel: 'Scopri di più',     ctaColor: '#f97316', unlockDate: '2025-12-16' },
-      { day: 17, imgSmall: 'img/DEC_17.jpg', imgBig: 'img/17_BIG.jpg', title: 'Giorno 17', text: 'Testo del giorno 17', link: '#', ctaLabel: 'Scopri di più',     ctaColor: '#22c55e', unlockDate: '2025-12-17' },
-      { day: 18, imgSmall: 'img/DEC_18.jpg', imgBig: 'img/18_BIG.jpg', title: 'Giorno 18', text: 'Testo del giorno 18', link: '#', ctaLabel: 'Scopri di più',     ctaColor: '#0ea5e9', unlockDate: '2025-12-18' },
-      { day: 19, imgSmall: 'img/DEC_19.jpg', imgBig: 'img/19_BIG.jpg', title: 'Giorno 19', text: 'Testo del giorno 19', link: '#', ctaLabel: 'Scopri di più',     ctaColor: '#f97316', unlockDate: '2025-12-19' },
-      { day: 20, imgSmall: 'img/DEC_20.jpg', imgBig: 'img/20_BIG.jpg', title: 'Giorno 20', text: 'Testo del giorno 20', link: '#', ctaLabel: 'Scopri di più',     ctaColor: '#22c55e', unlockDate: '2025-12-20' },
-      { day: 21, imgSmall: 'img/DEC_21.jpg', imgBig: 'img/21_BIG.jpg', title: 'Giorno 21', text: 'Testo del giorno 21', link: '#', ctaLabel: 'Scopri di più',     ctaColor: '#0ea5e9', unlockDate: '2025-12-21' },
-      { day: 22, imgSmall: 'img/DEC_22.jpg', imgBig: 'img/22_BIG.jpg', title: 'Giorno 22', text: 'Testo del giorno 22', link: '#', ctaLabel: 'Scopri di più',     ctaColor: '#f97316', unlockDate: '2025-12-22' },
-      { day: 23, imgSmall: 'img/DEC_23.jpg', imgBig: 'img/23_BIG.jpg', title: 'Giorno 23', text: 'Testo del giorno 23', link: '#', ctaLabel: 'Scopri di più',     ctaColor: '#e11d48', unlockDate: '2025-12-23' },
-      { day: 24, imgSmall: 'img/DEC_24.jpg', imgBig: 'img/24_BIG.jpg', title: 'Giorno 24', text: 'Testo del giorno 24', link: '#', ctaLabel: 'Scopri di più',     ctaColor: '#22c55e', unlockDate: '2025-12-24' },
-      { day: 25, imgSmall: 'img/DEC_25.jpg', imgBig: 'img/25_BIG.jpg', title: 'Giorno 25', text: 'Testo del giorno 25', link: '#', ctaLabel: 'Scopri il regalo', ctaColor: '#e11d48', unlockDate: '11/01/2025' }
+      { day: 1, imgSmall: 'img/DEC_1.jpg', imgBig: 'img/1_BIG.png', title: 'Giorno 1', text:'Testo...', link:'#', ctaLabel:'Scopri', ctaColor:'#ec4899', unlockDate:'2025-12-01' },
+      { day: 2, imgSmall: 'img/DEC_2.jpg', imgBig: 'img/2_BIG.jpg', title:'Giorno 2', text:'Testo...', link:'#', ctaLabel:'Scopri', ctaColor:'#0ea5e9', unlockDate:'2025-12-02' },
+      { day: 3, imgSmall: 'img/DEC_3.jpg', imgBig: 'img/3_BIG.jpg', title:'Giorno 3', text:'Testo...', link:'#', ctaLabel:'Scopri', ctaColor:'#22c55e', unlockDate:'2025-12-03' },
+      { day: 4, imgSmall: 'img/DEC_4.jpg', imgBig: 'img/4_BIG.jpg', title:'Giorno 4', text:'Testo...', link:'#', ctaLabel:'Scopri', ctaColor:'#f97316', unlockDate:'2025-12-04' },
+      { day: 5, imgSmall: 'img/DEC_5.jpg', imgBig: 'img/5_BIG.jpg', title:'Giorno 5', text:'Testo...', link:'#', ctaLabel:'Scopri', ctaColor:'#e11d48', unlockDate:'2025-12-05' },
+
+      /* … CONTINUA FINO AL 25 … */
+
+      { day: 25, imgSmall: 'img/DEC_25.jpg', imgBig: 'img/25_BIG.jpg', title:'Giorno 25', text:'🎁', link:'#', ctaLabel:'Apri regalo', ctaColor:'#e11d48', unlockDate:'2025-12-25' }
     ];
 
-    function normalizeDate(dateInput){
-      const d = new Date(dateInput);
-      d.setHours(0,0,0,0);
-      return d;
+
+    /* ======= UTIL ======= */
+    function normalizeDate(d){
+      const x = new Date(d);
+      x.setHours(0,0,0,0);
+      return x;
     }
 
-    function isFutureDate(dateStr){
-      const today = normalizeDate(new Date());
-      const unlock = normalizeDate(dateStr);
-      return unlock > today;
+    const today = normalizeDate(new Date());
+
+    function isFuture(d){
+      return normalizeDate(d) > today;
+    }
+    function isToday(d){
+      return normalizeDate(d).getTime() === today.getTime();
     }
 
-    function isTodayDate(dateStr){
-      const today = normalizeDate(new Date());
-      const unlock = normalizeDate(dateStr);
-      return unlock.getTime() === today.getTime();
-    }
-
+    /* ======= POPUP ======= */
     function openPopup(id){
-      const el = document.getElementById(id);
-      if(el){ el.style.display = "flex"; }
+      document.getElementById(id).style.display = "flex";
     }
 
     function closePopup(el){
       el.style.display = "none";
     }
 
+    /* ======= CREA BOX ======= */
     function createDayBox(day){
-      const isFuture = isFutureDate(day.unlockDate);
-      const isToday  = isTodayDate(day.unlockDate);
+      const future = isFuture(day.unlockDate);
+      const todayDay = isToday(day.unlockDate);
 
       const wrapper = document.createElement('div');
-      wrapper.className = 'box-wrapper';
+      wrapper.className = "box-wrapper";
 
       const box = document.createElement('div');
-      box.className = 'day-box';
-      if(day.day === 25) box.classList.add('day-box-25');
-      if(isFuture || isToday) box.classList.add('day-box-locked');
-      if(isToday) box.classList.add('current-day');
+      box.className = "day-box";
+
+      if(future || todayDay) box.classList.add("day-box-locked");
 
       const img = document.createElement('img');
       img.src = day.imgSmall;
       img.alt = day.title;
       box.appendChild(img);
 
-      const badge = document.createElement('div');
-      badge.className = 'day-badge';
-      badge.textContent = day.day;
-      box.appendChild(badge);
+      const num = document.createElement('div');
+      num.className = "day-badge";
+      num.textContent = day.day;
+      box.appendChild(num);
 
-      if(isFuture){
-        // Giorno nel futuro: niente popup, solo tremolio
+      if(todayDay){
+        const newTag = document.createElement('div');
+        newTag.className = "day-new-badge";
+        newTag.textContent = "NEW";
+        box.appendChild(newTag);
+      }
+
+      if(future){
         box.addEventListener('click', () => {
           box.classList.add('shake');
-          setTimeout(() => {
-            box.classList.remove('shake');
-          }, 400);
+          setTimeout(()=>box.classList.remove('shake'), 350);
         });
-      } else if(isToday){
-        // Giorno di oggi: stella "invita", poi si rompe al click
-        box.style.cursor = 'pointer';
+      } else if(todayDay){
         box.addEventListener('click', () => {
           box.classList.add('breaking');
-
-          setTimeout(() => {
+          setTimeout(()=>{
             box.classList.remove('day-box-locked');
             box.classList.remove('breaking');
-            box.classList.remove('current-day');
-
-            openPopup('popup'+day.day);
+            openPopup("popup"+day.day);
 
             if(day.day === 10){
-              document.body.classList.add('bg-2');
+              document.body.classList.add("bg-2");
             }
-          }, 400);
+          }, 350);
         });
       } else {
-        // Giorni passati: si aprono normalmente
         box.addEventListener('click', () => {
-          openPopup('popup'+day.day);
-
+          openPopup("popup"+day.day);
           if(day.day === 10){
-            document.body.classList.add('bg-2');
+            document.body.classList.add("bg-2");
           }
         });
       }
@@ -482,61 +357,49 @@
       return wrapper;
     }
 
+    /* ======= POPUP CREATOR ======= */
     function createPopup(day){
       const popup = document.createElement('div');
-      popup.className = 'popup';
-      popup.id = 'popup'+day.day;
-      popup.onclick = function(){ closePopup(this); };
+      popup.className = "popup";
+      popup.id = "popup"+day.day;
+      popup.onclick = function(){ closePopup(popup); };
 
       const content = document.createElement('div');
-      content.className = 'popup-content';
-      content.onclick = function(e){ e.stopPropagation(); };
+      content.className = "popup-content";
+      content.onclick = (e)=>e.stopPropagation();
 
       const close = document.createElement('div');
-      close.className = 'popup-close';
-      close.innerHTML = '&times;';
-      close.onclick = function(e){
-        e.stopPropagation();
-        popup.style.display = 'none';
-      };
-
-      const label = document.createElement('div');
-      label.className = 'popup-day-label';
-      label.textContent = 'Giorno ' + day.day;
+      close.className = "popup-close";
+      close.innerHTML = "&times;";
+      close.onclick = (e)=>{ e.stopPropagation(); popup.style.display="none"; };
 
       const img = document.createElement('img');
       img.src = day.imgBig;
-      img.alt = day.title;
 
-      const h3 = document.createElement('h3');
-      h3.textContent = day.title;
+      const title = document.createElement('h3');
+      title.textContent = day.title;
 
       const p = document.createElement('p');
       p.textContent = day.text;
 
-      const a = document.createElement('a');
-      a.href = day.link;
-      a.target = '_blank';
-      a.className = 'cta-button';
-      a.textContent = day.ctaLabel;
-      a.style.background = day.ctaColor;
-
-      // Quando clicchi il pulsante il popup si chiude
-      a.addEventListener('click', () => {
-        popup.style.display = 'none';
-      });
+      const btn = document.createElement('a');
+      btn.className = "cta-button";
+      btn.href = day.link;
+      btn.target = "_blank";
+      btn.style.background = day.ctaColor;
+      btn.textContent = day.ctaLabel;
 
       content.appendChild(close);
-      content.appendChild(label);
       content.appendChild(img);
-      content.appendChild(h3);
+      content.appendChild(title);
       content.appendChild(p);
-      content.appendChild(a);
+      content.appendChild(btn);
       popup.appendChild(content);
 
       document.body.appendChild(popup);
     }
 
+    /* ======= RENDER ======= */
     function renderCalendar(){
       const grid = document.getElementById('calendar');
       days.forEach(day => {
@@ -547,5 +410,6 @@
 
     renderCalendar();
   </script>
+
 </body>
 </html>
