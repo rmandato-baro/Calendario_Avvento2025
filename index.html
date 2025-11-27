@@ -21,43 +21,49 @@
     padding: 0;
     font-family: system-ui, sans-serif;
     display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    padding-top: 60px;
-    background: #ffffff00; /* trasparente */
+    justify-content: center;       /* per centrare il box orizzontalmente */
+    align-items: flex-start;       /* in alto */
+    padding-top: 80px;
+    background: #00000000;
   }
 
- /* .box {
-    width: 650px;
-    background: white;
-    border-radius: 25px;
-    padding: 45px 50px;
-    box-shadow: 0 25px 60px rgba(0,0,0,0.25);
+  /* BOX SEMI-TRASPARENTE */
+  .box {
+    width: 420px;
+    background: rgba(255, 255, 255, 0.35);   /* TRASPARENTE */
+    backdrop-filter: blur(12px);             /* effetto vetro */
+    -webkit-backdrop-filter: blur(12px);
+    border-radius: 22px;
+    padding: 35px 40px;
+    box-shadow: 0 20px 45px rgba(0,0,0,0.25);
     text-align: center;
     z-index: 10;
-  }*/
+  }
 
   h1 {
-    font-size: 28px;
-    margin-bottom: 8px;
+    font-size: 26px;
+    margin: 0 0 10px;
+    color: #ffffff;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.3);
   }
 
   p.subtitle {
-    font-size: 16px;
-    color: #444;
-    margin-bottom: 25px;
+    font-size: 15px;
+    color: #f4f4f4;
+    margin-bottom: 28px;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.2);
   }
 
   .btn {
-    display: block;
-    width: 100%;
-    padding: 15px;
-    margin: 12px 0;
+    display: inline-block;             /* PIÙ PICCOLI */
+    width: auto;                       /* non riempiono tutto */
+    padding: 12px 25px;
+    margin: 8px 0;
     border-radius: 12px;
     color: white;
     font-weight: 700;
     text-decoration: none;
-    font-size: 17px;
+    font-size: 16px;
     box-shadow: 0 3px 6px rgba(0,0,0,0.15);
     transition: transform .15s ease, filter .15s ease;
   }
@@ -67,13 +73,12 @@
     filter: brightness(1.08);
   }
 
-  .red { background: #c62828; }
-  .green { background: #007b55; }
+  .red { background: #b71c1c; }
 
   /* Responsive */
-  @media (max-width: 650px) {
+  @media (max-width: 500px) {
     .box {
-      width: 90%;
+      width: 85%;
       padding: 30px 25px;
     }
   }
@@ -81,20 +86,19 @@
 </head>
 <body>
 
-<!-- VIDEO BACKGROUND SENZA FILTRI -->
+<!-- VIDEO BACKGROUND -->
 <video class="bg-video" autoplay muted loop playsinline>
   <source src="video_intro.mp4" type="video/mp4">
 </video>
 
-<!-- BOX CENTRALE -->
+<!-- BOX CENTRALE TRASPARENTE -->
 <div class="box">
-  <p align="center" h1> Calendario dell'Avvento </h1> </p>
-  <p class="subtitle">Scegli quale versione del calendario vuoi visualizzare 🎄✨</p>
+  <h1 style="color: black">Calendario dell'Avvento</h1>
+  <p class="subtitle" style="color: black">Scegli quale versione del calendario vuoi visualizzare 🎄✨</p>
 
   <a href="calendar.html" class="btn red">Calendario principale</a>
-  <a href="calendar2_mov.html" class="btn red">Calendario con modifiche richieste</a>
-  
-  
+  <br>
+  <a href="calendar2_mov.html" class="btn red">Versione modificata</a>
 </div>
 
 </body>
