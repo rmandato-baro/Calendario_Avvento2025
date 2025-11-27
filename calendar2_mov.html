@@ -17,6 +17,23 @@
       box-sizing: border-box;
     }
 
+/* NEVE */
+.snowflake {
+  position: fixed;
+  top: -10px;
+  color: #fff;
+  font-size: 12px;
+  pointer-events: none;
+  opacity: 0.9;
+  z-index: 99999;
+  animation: fall linear infinite;
+}
+
+@keyframes fall {
+  0%   { transform: translateY(0) rotate(0deg); }
+  100% { transform: translateY(100vh) rotate(360deg); }
+}
+
     /* Sfondo 1 (di base) */
     body::before {
       content: "";
@@ -580,6 +597,38 @@ function createDayBox(day){
     }
 
     renderCalendar();
+    
+// CREA NEVE ❄️
+function createSnow() {
+  const snow = document.createElement("div");
+  snow.classList.add("snowflake");
+  snow.textContent = "❄";
+
+  // posizione casuale
+  snow.style.left = Math.random() * window.innerWidth + "px";
+
+  // dimensione casuale
+  const size = (Math.random() * 12) + 8;
+  snow.style.fontSize = size + "px";
+
+  // durata caduta casuale
+  const duration = (Math.random() * 4) + 3;
+  snow.style.animationDuration = duration + "s";
+
+  document.body.appendChild(snow);
+
+  // elimina fiocco dopo caduta
+  setTimeout(() => {
+    snow.remove();
+  }, duration * 1000);
+}
+
+// genera neve ogni 150ms
+setInterval(createSnow, 150);
+</script>
+
+    
+    
   </script>
 </body>
 </html>
