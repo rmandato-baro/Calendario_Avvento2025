@@ -453,7 +453,7 @@
       { day: 22, imgSmall: 'img/DEC_22.jpg', imgBig: 'img/22_BIG.jpg', title: '',  text: '', link: '#', ctaLabel: 'Scopri di più',     ctaColor: '#f97316', unlockDate: '2025-12-22' },
       { day: 23, imgSmall: 'img/DEC_23.jpg', imgBig: 'img/23_BIG.jpg', title: '',  text: '', link: '#', ctaLabel: 'Scopri di più',     ctaColor: '#e11d48', unlockDate: '2025-12-23' },
       { day: 24, imgSmall: 'img/DEC_24.jpg', imgBig: 'img/24_BIG.jpg', title: '',  text: '', link: '#', ctaLabel: 'Scopri di più',     ctaColor: '#22c55e', unlockDate: '2025-12-24' },
-      { day: 25, imgSmall: 'img/DEC_25.jpg', imgBig: 'img/25_BIG.jpg', title: '',  text: '', link: '#', ctaLabel: 'Scopri il regalo', ctaColor: '#e11d48', unlockDate: '11/01/2025' }
+      { day: 25, videoUrl:"https://www.youtube.com/embed/4o9pxq-VWo0?autoplay=1&mute=1", title: 'Auguri da Barò Cosmetics',  text: '', link: '#', ctaLabel: 'Scopri il regalo', ctaColor: '#e11d48', unlockDate: '11/01/2025' }
     ];
 
     function normalizeDate(dateInput){
@@ -564,60 +564,75 @@ function createDayBox(day){
   return wrapper;
 }
 
-    function createPopup(day){
-      const popup = document.createElement('div');
-      popup.className = 'popup';
-      popup.id = 'popup'+day.day;
-      popup.onclick = function(){ closePopup(this); };
+  function createPopup(day){
+  const popup = document.createElement('div');
+  popup.className = 'popup';
+  popup.id = 'popup'+day.day;
+  popup.onclick = function(){ closePopup(this); };
 
-      const content = document.createElement('div');
-      content.className = 'popup-content';
-      content.onclick = function(e){ e.stopPropagation(); };
+  const content = document.createElement('div');
+  content.className = 'popup-content';
+  content.onclick = function(e){ e.stopPropagation(); };
 
-      const close = document.createElement('div');
-      close.className = 'popup-close';
-      close.innerHTML = '&times;';
-      close.onclick = function(e){
-        e.stopPropagation();
-        popup.style.display = 'none';
-      };
+  const close = document.createElement('div');
+  close.className = 'popup-close';
+  close.innerHTML = '&times;';
+  close.onclick = function(e){
+    e.stopPropagation();
+    popup.style.display = 'none';
+  };
 
-      const label = document.createElement('div');
-      label.className = 'popup-day-label';
-      label.textContent = 'Giorno ' + day.day;
+  const label = document.createElement('div');
+  label.className = 'popup-day-label';
+  label.textContent = 'Giorno ' + day.day;
 
-      const img = document.createElement('img');
-      img.src = day.imgBig;
-      img.alt = day.title;
+  // 🔥 GESTIONE VIDEO O IMMAGINE
+  if (day.videoUrl) {
+    // Video YouTube (giorno 25)
+    const iframe = document.createElement('iframe');
+    iframe.src = day.videoUrl;
+    iframe.width = "100%";
+    iframe.height = "230";
+    iframe.style.borderRadius = "16px";
+    iframe.style.border = "none";
+    iframe.allow = "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture";
+    iframe.allowFullscreen = true;
+    content.appendChild(iframe);
 
-      const h3 = document.createElement('h3');
-      h3.textContent = day.title;
+  } else {
+    // Immagine classica
+    const img = document.createElement('img');
+    img.src = day.imgBig;
+    img.alt = day.title;
+    content.appendChild(img);
+  }
 
-      const p = document.createElement('p');
-      p.textContent = day.text;
+  const h3 = document.createElement('h3');
+  h3.textContent = day.title;
 
-      const a = document.createElement('a');
-      a.href = day.link;
-      a.target = '_blank';
-      a.className = 'cta-button';
-      a.textContent = day.ctaLabel;
-      a.style.background = day.ctaColor;
+  const p = document.createElement('p');
+  p.textContent = day.text;
 
-      // Quando clicchi il pulsante il popup si chiude
-      a.addEventListener('click', () => {
-        popup.style.display = 'none';
-      });
+  const a = document.createElement('a');
+  a.href = day.link;
+  a.target = '_blank';
+  a.className = 'cta-button';
+  a.textContent = day.ctaLabel;
+  a.style.background = day.ctaColor;
 
-      content.appendChild(close);
-      content.appendChild(label);
-      content.appendChild(img);
-      content.appendChild(h3);
-      content.appendChild(p);
-      content.appendChild(a);
-      popup.appendChild(content);
+  a.addEventListener('click', () => {
+    popup.style.display = 'none';
+  });
 
-      document.body.appendChild(popup);
-    }
+  content.appendChild(close);
+  content.appendChild(label);
+  content.appendChild(h3);
+  content.appendChild(p);
+  content.appendChild(a);
+  popup.appendChild(content);
+
+  document.body.appendChild(popup);
+}
 
     function renderCalendar(){
       const grid = document.getElementById('calendar');
