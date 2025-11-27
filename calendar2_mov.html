@@ -129,24 +129,41 @@
       transform:scale(1.03);
     }
 
-    /* Bollino numero
-    .day-badge{
-      position:absolute;
-      top:8px;
-      left:8px;
-      width:30px;
-      height:30px;
-      border-radius:999px;
-      background: radial-gradient(circle at 30% 30%, #fef3c7, #b91c1c);
-      color:#fff;
-      font-weight:700;
-      font-size:14px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      box-shadow:0 4px 10px rgba(0,0,0,0.4);
-      z-index:2;
-    } */
+/* Badge NEW per il giorno attivo */
+.day-new-badge {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  background: #facc15;         /* oro */
+  color: #111;
+  font-weight: 700;
+  font-size: 12px;
+  padding: 3px 7px;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+  z-index: 3;
+  animation: new-badge-pulse 1.4s infinite ease-in-out;
+}
+
+.day-open-badge {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  background: #4ade80;      /* verde “aperto” */
+  color: #111;
+  font-weight: 700;
+  font-size: 12px;
+  padding: 3px 7px;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+  z-index: 3;
+}
+
+@keyframes new-badge-pulse {
+  0%   { transform: scale(1); }
+  50%  { transform: scale(1.15); }
+  100% { transform: scale(1); }
+}
 
     .day-box-25{
       box-shadow:0 0 0 rgba(0,0,0,0);
@@ -377,7 +394,7 @@
       { day: 11, imgSmall: 'img/DEC_11.jpg', imgBig: 'img/11_BIG.jpg', title: 'Giorno 11', text: 'Testo del giorno 11', link: '#', ctaLabel: 'Scopri di più',     ctaColor: '#0ea5e9', unlockDate: '11/26/2025' },
       { day: 12, imgSmall: 'img/DEC_12.jpg', imgBig: 'img/12_BIG.jpg', title: 'Giorno 12', text: 'Testo del giorno 12', link: '#', ctaLabel: 'Scopri di più',     ctaColor: '#f97316', unlockDate: '2025-12-12' },
       { day: 13, imgSmall: 'img/DEC_13.jpg', imgBig: 'img/13_BIG.jpg', title: 'Giorno 13', text: 'Testo del giorno 13', link: '#', ctaLabel: 'Scopri di più',     ctaColor: '#e11d48', unlockDate: '2025-12-13' },
-      { day: 14, imgSmall: 'img/DEC_14.jpg', imgBig: 'img/14_BIG.jpg', title: 'Giorno 14', text: 'Testo del giorno 14', link: '#', ctaLabel: 'Scopri di più',     ctaColor: '#22c55e', unlockDate: '11/26/2025' },
+      { day: 14, imgSmall: 'img/DEC_14.jpg', imgBig: 'img/14_BIG.jpg', title: 'Giorno 14', text: 'Testo del giorno 14', link: '#', ctaLabel: 'Scopri di più',     ctaColor: '#22c55e', unlockDate: '11/27/2025' },
       { day: 15, imgSmall: 'img/DEC_15.jpg', imgBig: 'img/15_BIG.jpg', title: 'Giorno 15', text: 'Testo del giorno 15', link: '#', ctaLabel: 'Scopri di più',     ctaColor: '#0ea5e9', unlockDate: '2025-12-15' },
       { day: 16, imgSmall: 'img/DEC_16.jpg', imgBig: 'img/16_BIG.jpg', title: 'Giorno 16', text: 'Testo del giorno 16', link: '#', ctaLabel: 'Scopri di più',     ctaColor: '#f97316', unlockDate: '2025-12-16' },
       { day: 17, imgSmall: 'img/DEC_17.jpg', imgBig: 'img/17_BIG.jpg', title: 'Giorno 17', text: 'Testo del giorno 17', link: '#', ctaLabel: 'Scopri di più',     ctaColor: '#22c55e', unlockDate: '2025-12-17' },
@@ -418,69 +435,86 @@
       el.style.display = "none";
     }
 
-    function createDayBox(day){
-      const isFuture = isFutureDate(day.unlockDate);
-      const isToday  = isTodayDate(day.unlockDate);
+function createDayBox(day){
+  const isFuture = isFutureDate(day.unlockDate);
+  const isToday  = isTodayDate(day.unlockDate);
 
-      const wrapper = document.createElement('div');
-      wrapper.className = 'box-wrapper';
+  const wrapper = document.createElement('div');
+  wrapper.className = 'box-wrapper';
 
-      const box = document.createElement('div');
-      box.className = 'day-box';
-      if(day.day === 25) box.classList.add('day-box-25');
-      if(isFuture || isToday) box.classList.add('day-box-locked');
-      if(isToday) box.classList.add('current-day');
+  const box = document.createElement('div');
+  box.className = 'day-box';
+  if(day.day === 25) box.classList.add('day-box-25');
+  if(isFuture || isToday) box.classList.add('day-box-locked');
 
-      const img = document.createElement('img');
-      img.src = day.imgSmall;
-      img.alt = day.title;
-      box.appendChild(img);
+  // immagine piccola
+  const img = document.createElement('img');
+  img.src = day.imgSmall;
+  img.alt = day.title;
+  box.appendChild(img);
 
-      const badge = document.createElement('div');
-      badge.className = 'day-badge';
-      badge.textContent = day.day;
-      box.appendChild(badge);
+  // bollino numero
+  const badge = document.createElement('div');
+  badge.className = 'day-badge';
+  badge.textContent = day.day;
+  box.appendChild(badge);
 
-      if(isFuture){
-        // Giorno nel futuro: niente popup, solo tremolio
-        box.addEventListener('click', () => {
-          box.classList.add('shake');
-          setTimeout(() => {
-            box.classList.remove('shake');
-          }, 400);
-        });
-      } else if(isToday){
-        // Giorno di oggi: stella "invita", poi si rompe al click
-        box.style.cursor = 'pointer';
-        box.addEventListener('click', () => {
-          box.classList.add('breaking');
+  // ⭐ NEW badge SOLO nel giorno corrente
+  if (isToday) {
+    const newBadge = document.createElement('div');
+    newBadge.className = 'day-new-badge';
+    newBadge.textContent = "NEW";
+    box.appendChild(newBadge);
+  }
 
-          setTimeout(() => {
-            box.classList.remove('day-box-locked');
-            box.classList.remove('breaking');
-            box.classList.remove('current-day');
+  // --- CLICK HANDLING ---
+  if(isFuture){
+    // Giorno futuro → tremolio
+    box.addEventListener('click', () => {
+      box.classList.add('shake');
+      setTimeout(() => box.classList.remove('shake'), 400);
+    });
 
-            openPopup('popup'+day.day);
+} else if(isToday){
+  // Giorno corrente → animazione, popup e cambio badge NEW → OPEN
+  box.style.cursor = "pointer";
+  box.addEventListener('click', () => {
+    box.classList.add('breaking');
 
-            if(day.day === 10){
-              document.body.classList.add('bg-2');
-            }
-          }, 400);
-        });
-      } else {
-        // Giorni passati: si aprono normalmente
-        box.addEventListener('click', () => {
-          openPopup('popup'+day.day);
+    setTimeout(() => {
+      box.classList.remove('day-box-locked');
+      box.classList.remove('breaking');
 
-          if(day.day === 10){
-            document.body.classList.add('bg-2');
-          }
-        });
+      // ⭐ Cambia NEW → OPEN
+      const newBadge = box.querySelector(".day-new-badge");
+      if (newBadge) {
+        newBadge.classList.remove("day-new-badge");
+        newBadge.classList.add("day-open-badge");
+        newBadge.textContent = "OPEN";
       }
 
-      wrapper.appendChild(box);
-      return wrapper;
-    }
+      openPopup('popup' + day.day);
+
+      if(day.day === 10){
+        document.body.classList.add('bg-2');
+      }
+    }, 350);
+  });
+
+
+  } else {
+    // Giorno passato → si apre normalmente
+    box.addEventListener('click', () => {
+      openPopup('popup' + day.day);
+      if(day.day === 10){
+        document.body.classList.add('bg-2');
+      }
+    });
+  }
+
+  wrapper.appendChild(box);
+  return wrapper;
+}
 
     function createPopup(day){
       const popup = document.createElement('div');
