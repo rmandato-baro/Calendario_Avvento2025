@@ -17,12 +17,29 @@
       box-sizing: border-box;
     }
 
+/* NEVE */
+.snowflake {
+  position: fixed;
+  top: -10px;
+  color: #fff;
+  font-size: 12px;
+  pointer-events: none;
+  opacity: 0.9;
+  z-index: 99999;
+  animation: fall linear infinite;
+}
+
+@keyframes fall {
+  0%   { transform: translateY(0) rotate(0deg); }
+  100% { transform: translateY(100vh) rotate(360deg); }
+}
+
     /* Sfondo 1 (di base) */
     body::before {
       content: "";
       position: fixed;
       inset: 0;
-      background: url("img/sfondo_1.jpg") center/cover no-repeat fixed;
+      background: url("img/sfondo_1.webp") center/cover no-repeat fixed;
       z-index: -2;
       opacity: 1;
       transition: opacity 0.8s ease;
@@ -33,7 +50,7 @@
       content: "";
       position: fixed;
       inset: 0;
-      background: url("img/sfondo_2.jpg") center/cover no-repeat fixed;
+      background: url("img/sfondo_2.webp") center/cover no-repeat fixed;
       z-index: -1;
       opacity: 0;
       transition: opacity 0.8s ease;
@@ -129,24 +146,41 @@
       transform:scale(1.03);
     }
 
-    /* Bollino numero
-    .day-badge{
-      position:absolute;
-      top:8px;
-      left:8px;
-      width:30px;
-      height:30px;
-      border-radius:999px;
-      background: radial-gradient(circle at 30% 30%, #fef3c7, #b91c1c);
-      color:#fff;
-      font-weight:700;
-      font-size:14px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      box-shadow:0 4px 10px rgba(0,0,0,0.4);
-      z-index:2;
-    } */
+/* Badge NEW per il giorno attivo */
+.day-new-badge {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  background: #facc15;         /* oro */
+  color: #111;
+  font-weight: 700;
+  font-size: 12px;
+  padding: 3px 7px;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+  z-index: 3;
+  animation: new-badge-pulse 1.4s infinite ease-in-out;
+}
+
+.day-open-badge {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  background: #4ade80;      /* verde “aperto” */
+  color: #111;
+  font-weight: 700;
+  font-size: 12px;
+  padding: 3px 7px;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+  z-index: 3;
+}
+
+@keyframes new-badge-pulse {
+  0%   { transform: scale(1); }
+  50%  { transform: scale(1.15); }
+  100% { transform: scale(1); }
+}
 
     .day-box-25{
       box-shadow:0 0 0 rgba(0,0,0,0);
@@ -346,12 +380,43 @@
         height:90px;
       }
     }
+    
+/* Barra rossa con testo scorrevole */
+.top-marquee {
+  width: 100%;
+  overflow: hidden;
+  background: #00441C; /* verde Barò */
+  padding: 10px 0;
+  color: #fff;
+  font-size: 17px;
+  font-weight: 600;
+  text-align: center;
+  white-space: nowrap;
+  z-index: 999;
+}
+
+/* Animazione scorrevole */
+.top-marquee span {
+  display: inline-block;
+  padding-left: 100%;
+  animation: slide-text 12s linear infinite;
+}
+
+@keyframes slide-text {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-100%); }
+}    
   </style>
 </head>
 <body>
   <div class="page-container">
-    <h1 class="page-title"> </h1>
-    <p class="page-subtitle"> </p>
+        <!-- BANNER SCORREVOLE ROSSO -->
+  <div class="top-marquee">
+    <span> Ordina entro il 18/12/2025 per ricevere i tuoi regali di Natale in tempo!✨ </span>
+  </div>
+
+    <h1 class="page-title" style="color: white">  Calendario Avvento Barò  </h1>
+    <p class="page-subtitle" style="color: white"> 💫 La skincare che ami, in un viaggio esclusivo verso il Natale. </p>
     <h1 class="page-title"> </h1>
     <p class="page-subtitle"> </p>
 
@@ -360,35 +425,35 @@
 
   <script>
     // Config giorni
-    // Piccole: img/DEC_1.jpg ... img/DEC_25.jpg
-    // Grandi:  img/1_BIG.jpg  ... img/25_BIG.jpg
+    // Piccole: img/DEC_1.webp ... img/DEC_25.webp
+    // Grandi:  img/1_BIG.webp  ... img/25_BIG.webp
     // unlockDate in formato YYYY-MM-DD
     const days = [
-      { day: 1,  imgSmall: 'img/DEC_1.jpg',  imgBig: 'img/1_BIG.png',  title: '',  text: '',  link: 'https://www.barocosmetics.com', ctaLabel: 'Scopri di più',     ctaColor: '#ec4899', unlockDate: '11/01/2025' },
-      { day: 2,  imgSmall: 'img/DEC_2.jpg',  imgBig: 'img/2_BIG.jpg',  title: 'Giorno 2',  text: 'Testo del giorno 2',  link: '#', ctaLabel: 'Scopri di più',     ctaColor: '#0ea5e9', unlockDate: '11/01/2025' },
-      { day: 3,  imgSmall: 'img/DEC_3.jpg',  imgBig: 'img/3_BIG.jpg',  title: 'Giorno 3',  text: 'Testo del giorno 3',  link: '#', ctaLabel: 'Scopri di più',     ctaColor: '#22c55e', unlockDate: '11/01/2025' },
-      { day: 4,  imgSmall: 'img/DEC_4.jpg',  imgBig: 'img/4_BIG.jpg',  title: 'Giorno 4',  text: 'Testo del giorno 4',  link: '#', ctaLabel: 'Scopri di più',     ctaColor: '#f97316', unlockDate: '11/01/2025' },
-      { day: 5,  imgSmall: 'img/DEC_5.jpg',  imgBig: 'img/5_BIG.jpg',  title: 'Giorno 5',  text: 'Testo del giorno 5',  link: '#', ctaLabel: 'Scopri di più',     ctaColor: '#e11d48', unlockDate: '11/01/2025' },
-      { day: 6,  imgSmall: 'img/DEC_6.jpg',  imgBig: 'img/6_BIG.jpg',  title: 'Giorno 6',  text: 'Testo del giorno 6',  link: '#', ctaLabel: 'Scopri di più',     ctaColor: '#0ea5e9', unlockDate: '11/01/2025' },
-      { day: 7,  imgSmall: 'img/DEC_7.jpg',  imgBig: 'img/6_BIG.jpg',  title: 'Giorno 7',  text: 'Testo del giorno 7',  link: '#', ctaLabel: 'Scopri di più',     ctaColor: '#22c55e', unlockDate: '11/01/2025' },
-      { day: 8,  imgSmall: 'img/DEC_8.jpg',  imgBig: 'img/8_BIG.jpg',  title: 'Giorno 8',  text: 'Testo del giorno 8',  link: '#', ctaLabel: 'Scopri di più',     ctaColor: '#f97316', unlockDate: '11/01/2025' },
-      { day: 9,  imgSmall: 'img/DEC_9.jpg',  imgBig: 'img/9_BIG.jpg',  title: 'Giorno 9',  text: 'Testo del giorno 9',  link: '#', ctaLabel: 'Scopri di più',     ctaColor: '#ec4899', unlockDate: '11/01/2025' },
-      { day: 10, imgSmall: 'img/DEC_10.jpg', imgBig: 'img/10_BIG.jpg', title: 'Giorno 10', text: 'Testo del giorno 10', link: '#', ctaLabel: 'Scopri di più',     ctaColor: '#22c55e', unlockDate: '11/25/2025' },
-      { day: 11, imgSmall: 'img/DEC_11.jpg', imgBig: 'img/11_BIG.jpg', title: 'Giorno 11', text: 'Testo del giorno 11', link: '#', ctaLabel: 'Scopri di più',     ctaColor: '#0ea5e9', unlockDate: '11/26/2025' },
-      { day: 12, imgSmall: 'img/DEC_12.jpg', imgBig: 'img/12_BIG.jpg', title: 'Giorno 12', text: 'Testo del giorno 12', link: '#', ctaLabel: 'Scopri di più',     ctaColor: '#f97316', unlockDate: '2025-12-12' },
-      { day: 13, imgSmall: 'img/DEC_13.jpg', imgBig: 'img/13_BIG.jpg', title: 'Giorno 13', text: 'Testo del giorno 13', link: '#', ctaLabel: 'Scopri di più',     ctaColor: '#e11d48', unlockDate: '2025-12-13' },
-      { day: 14, imgSmall: 'img/DEC_14.jpg', imgBig: 'img/14_BIG.jpg', title: 'Giorno 14', text: 'Testo del giorno 14', link: '#', ctaLabel: 'Scopri di più',     ctaColor: '#22c55e', unlockDate: '11/26/2025' },
-      { day: 15, imgSmall: 'img/DEC_15.jpg', imgBig: 'img/15_BIG.jpg', title: 'Giorno 15', text: 'Testo del giorno 15', link: '#', ctaLabel: 'Scopri di più',     ctaColor: '#0ea5e9', unlockDate: '2025-12-15' },
-      { day: 16, imgSmall: 'img/DEC_16.jpg', imgBig: 'img/16_BIG.jpg', title: 'Giorno 16', text: 'Testo del giorno 16', link: '#', ctaLabel: 'Scopri di più',     ctaColor: '#f97316', unlockDate: '2025-12-16' },
-      { day: 17, imgSmall: 'img/DEC_17.jpg', imgBig: 'img/17_BIG.jpg', title: 'Giorno 17', text: 'Testo del giorno 17', link: '#', ctaLabel: 'Scopri di più',     ctaColor: '#22c55e', unlockDate: '2025-12-17' },
-      { day: 18, imgSmall: 'img/DEC_18.jpg', imgBig: 'img/18_BIG.jpg', title: 'Giorno 18', text: 'Testo del giorno 18', link: '#', ctaLabel: 'Scopri di più',     ctaColor: '#0ea5e9', unlockDate: '2025-12-18' },
-      { day: 19, imgSmall: 'img/DEC_19.jpg', imgBig: 'img/19_BIG.jpg', title: 'Giorno 19', text: 'Testo del giorno 19', link: '#', ctaLabel: 'Scopri di più',     ctaColor: '#f97316', unlockDate: '2025-12-19' },
-      { day: 20, imgSmall: 'img/DEC_20.jpg', imgBig: 'img/20_BIG.jpg', title: 'Giorno 20', text: 'Testo del giorno 20', link: '#', ctaLabel: 'Scopri di più',     ctaColor: '#22c55e', unlockDate: '2025-12-20' },
-      { day: 21, imgSmall: 'img/DEC_21.jpg', imgBig: 'img/21_BIG.jpg', title: 'Giorno 21', text: 'Testo del giorno 21', link: '#', ctaLabel: 'Scopri di più',     ctaColor: '#0ea5e9', unlockDate: '2025-12-21' },
-      { day: 22, imgSmall: 'img/DEC_22.jpg', imgBig: 'img/22_BIG.jpg', title: 'Giorno 22', text: 'Testo del giorno 22', link: '#', ctaLabel: 'Scopri di più',     ctaColor: '#f97316', unlockDate: '2025-12-22' },
-      { day: 23, imgSmall: 'img/DEC_23.jpg', imgBig: 'img/23_BIG.jpg', title: 'Giorno 23', text: 'Testo del giorno 23', link: '#', ctaLabel: 'Scopri di più',     ctaColor: '#e11d48', unlockDate: '2025-12-23' },
-      { day: 24, imgSmall: 'img/DEC_24.jpg', imgBig: 'img/24_BIG.jpg', title: 'Giorno 24', text: 'Testo del giorno 24', link: '#', ctaLabel: 'Scopri di più',     ctaColor: '#22c55e', unlockDate: '2025-12-24' },
-      { day: 25, imgSmall: 'img/DEC_25.jpg', imgBig: 'img/25_BIG.jpg', title: 'Giorno 25', text: 'Testo del giorno 25', link: '#', ctaLabel: 'Scopri il regalo', ctaColor: '#e11d48', unlockDate: '11/01/2025' }
+      { day: 1,  imgSmall: 'img/DEC_1.webp',  imgBig: 'img/1_BIG.webp',  title: '',  text: '',  link: 'https://wow4.me/0be281a6', ctaLabel: 'Scopri di più',     ctaColor: '#691b32', unlockDate: '11/01/2025' },
+      { day: 2,  imgSmall: 'img/DEC_2.webp',  imgBig: 'img/2_BIG.webp',  title: '',  text: '',  link: 'https://wow4.me/04c864b7', ctaLabel: 'Scopri di più',     ctaColor: '#691b32', unlockDate: '11/01/2025' },
+      { day: 3,  imgSmall: 'img/DEC_3.webp',  imgBig: 'img/3_BIG.webp',  title: '',  text: '',  link: 'https://wow4.me/921a31a1', ctaLabel: 'Scopri di più',     ctaColor: '#691b32', unlockDate: '11/01/2025' },
+      { day: 4,  imgSmall: 'img/DEC_4.webp',  imgBig: 'img/4_BIG.webp',  title: '',  text: '',  link: 'https://wow4.me/b4f9d1d9', ctaLabel: 'Scopri di più',     ctaColor: '#691b32', unlockDate: '11/01/2025' },
+      { day: 5,  imgSmall: 'img/DEC_5.webp',  imgBig: 'img/5_BIG.webp',  title: '',  text: '',  link: 'https://wow4.me/dbb7ed71', ctaLabel: 'Scopri di più',     ctaColor: '#691b32', unlockDate: '11/01/2025' },
+      { day: 6,  imgSmall: 'img/DEC_6.webp',  imgBig: 'img/6_BIG.webp',  title: '',  text: '',  link: 'https://wow4.me/5ed1fa49', ctaLabel: 'Scopri di più',     ctaColor: '#691b32', unlockDate: '11/01/2025' },
+      { day: 7,  imgSmall: 'img/DEC_7.webp',  imgBig: 'img/7_BIG.webp',  title: '',  text: '',  link: 'https://wow4.me/d95ffffd', ctaLabel: 'Scopri di più',     ctaColor: '#691b32', unlockDate: '11/07/2025' },
+      { day: 8,  imgSmall: 'img/DEC_8.webp',  imgBig: 'img/8_BIG.webp',  title: '',  text: '',  link: 'https://wow4.me/53889d59', ctaLabel: 'Scopri di più',     ctaColor: '#691b32', unlockDate: '11/08/2025' },
+      { day: 9,  imgSmall: 'img/DEC_9.webp',  imgBig: 'img/9_BIG.webp',  title: '',  text: '',  link: 'https://wow4.me/fda84234', ctaLabel: 'Scopri di più',     ctaColor: '#691b32', unlockDate: '11/09/2025' },
+      { day: 10, imgSmall: 'img/DEC_10.webp', imgBig: 'img/10_BIG.webp', title: '',  text: '', link: 'https://wow4.me/183b2ba4', ctaLabel: 'Scopri di più',     ctaColor: '#691b32', unlockDate: '11/10/2025' },
+      { day: 11, imgSmall: 'img/DEC_11.webp', imgBig: 'img/11_BIG.webp', title: '',  text: '', link: 'https://wow4.me/c5839e14', ctaLabel: 'Scopri di più',     ctaColor: '#691b32', unlockDate: '11/11/2025' },
+      { day: 12, imgSmall: 'img/DEC_12.webp', imgBig: 'img/12_BIG.webp', title: '',  text: '', link: 'https://wow4.me/8d533ad5', ctaLabel: 'Scopri di più',     ctaColor: '#691b32', unlockDate: '11/12/2025' },
+      { day: 13, imgSmall: 'img/DEC_13.webp', imgBig: 'img/13_BIG.webp', title: '',  text: '', link: 'https://wow4.me/b7b16fd6', ctaLabel: 'Scopri di più',     ctaColor: '#691b32', unlockDate: '11/13/2025' },
+      { day: 14, imgSmall: 'img/DEC_14.webp', imgBig: 'img/14_BIG.webp', title: '',  text: '', link: 'https://wow4.me/38912722', ctaLabel: 'Scopri di più',     ctaColor: '#691b32', unlockDate: '121/14/2025' },
+      { day: 15, imgSmall: 'img/DEC_15.webp', imgBig: 'img/15_BIG.webp', title: '',  text: '', link: 'https://wow4.me/fd7a513d', ctaLabel: 'Scopri di più',     ctaColor: '#691b32', unlockDate: '11/15/2025' },
+      { day: 16, imgSmall: 'img/DEC_16.webp', imgBig: 'img/16_BIG.webp', title: '',  text: '', link: 'https://wow4.me/7e4dc185', ctaLabel: 'Scopri di più',     ctaColor: '#691b32', unlockDate: '11/16/2025' },
+      { day: 17, imgSmall: 'img/DEC_17.webp', imgBig: 'img/17_BIG.webp', title: '',  text: '', link: 'https://wow4.me/5ad99f62', ctaLabel: 'Scopri di più',     ctaColor: '#691b32', unlockDate: '11/17/2025' },
+      { day: 18, imgSmall: 'img/DEC_18.webp', imgBig: 'img/18_BIG.webp', title: '',  text: '', link: 'https://wow4.me/ac20b831', ctaLabel: 'Scopri di più',     ctaColor: '#691b32', unlockDate: '11/18/2025' },
+      { day: 19, imgSmall: 'img/DEC_19.webp', imgBig: 'img/19_BIG.webp', title: '',  text: '', link: 'https://wow4.me/6cd259fb', ctaLabel: 'Scopri di più',     ctaColor: '#691b32', unlockDate: '11/19/2025' },
+      { day: 20, imgSmall: 'img/DEC_20.webp', imgBig: 'img/20_BIG.webp', title: '',  text: '', link: 'https://wow4.me/4041a2f9', ctaLabel: 'Scopri di più',     ctaColor: '#691b32', unlockDate: '11/20/2025' },
+      { day: 21, imgSmall: 'img/DEC_21.webp', imgBig: 'img/21_BIG.webp', title: '',  text: '', link: 'https://wow4.me/49cabe88', ctaLabel: 'Scopri di più',     ctaColor: '#691b32', unlockDate: '11/21/2025' },
+      { day: 22, imgSmall: 'img/DEC_22.webp', imgBig: 'img/22_BIG.webp', title: '',  text: '', link: 'https://wow4.me/5ed260e5', ctaLabel: 'Scopri di più',     ctaColor: '#691b32', unlockDate: '11/22/2025' },
+      { day: 23, imgSmall: 'img/DEC_23.webp', imgBig: 'img/23_BIG.webp', title: '',  text: '', link: 'https://wow4.me/61017520', ctaLabel: 'Scopri di più',     ctaColor: '#691b32', unlockDate: '11/23/2025' },
+      { day: 24, imgSmall: 'img/DEC_24.webp', imgBig: 'img/24_BIG.webp', title: '',  text: '', link: 'https://wow4.me/37c40da6', ctaLabel: 'Scopri di più',     ctaColor: '#691b32', unlockDate: '11/24/2025' },
+      { day: 25, imgSmall: 'img/DEC_25.webp', videoUrl:"https://www.youtube.com/embed/MiHTVHOO6aE?autoplay=1&mute=1", title: '',  text: '', link: '#', ctaLabel: 'Auguri da Barò Cosmetics', ctaColor: '#691b32', unlockDate: '11/25/2025' }
     ];
 
     function normalizeDate(dateInput){
@@ -418,124 +483,156 @@
       el.style.display = "none";
     }
 
-    function createDayBox(day){
-      const isFuture = isFutureDate(day.unlockDate);
-      const isToday  = isTodayDate(day.unlockDate);
+function createDayBox(day){
+  const isFuture = isFutureDate(day.unlockDate);
+  const isToday  = isTodayDate(day.unlockDate);
 
-      const wrapper = document.createElement('div');
-      wrapper.className = 'box-wrapper';
+  const wrapper = document.createElement('div');
+  wrapper.className = 'box-wrapper';
 
-      const box = document.createElement('div');
-      box.className = 'day-box';
-      if(day.day === 25) box.classList.add('day-box-25');
-      if(isFuture || isToday) box.classList.add('day-box-locked');
-      if(isToday) box.classList.add('current-day');
+  const box = document.createElement('div');
+  box.className = 'day-box';
+  if(day.day === 25) box.classList.add('day-box-25');
+  if(isFuture || isToday) box.classList.add('day-box-locked');
 
-      const img = document.createElement('img');
-      img.src = day.imgSmall;
-      img.alt = day.title;
-      box.appendChild(img);
+  // immagine piccola
+  const img = document.createElement('img');
+  img.src = day.imgSmall;
+  img.alt = day.title;
+  box.appendChild(img);
 
-      const badge = document.createElement('div');
-      badge.className = 'day-badge';
-      badge.textContent = day.day;
-      box.appendChild(badge);
+  // bollino numero
+  const badge = document.createElement('div');
+  badge.className = 'day-badge';
+  badge.textContent = day.day;
+  box.appendChild(badge);
 
-      if(isFuture){
-        // Giorno nel futuro: niente popup, solo tremolio
-        box.addEventListener('click', () => {
-          box.classList.add('shake');
-          setTimeout(() => {
-            box.classList.remove('shake');
-          }, 400);
-        });
-      } else if(isToday){
-        // Giorno di oggi: stella "invita", poi si rompe al click
-        box.style.cursor = 'pointer';
-        box.addEventListener('click', () => {
-          box.classList.add('breaking');
+  // ⭐ NEW badge SOLO nel giorno corrente
+  if (isToday) {
+    const newBadge = document.createElement('div');
+    newBadge.className = 'day-new-badge';
+    newBadge.textContent = "NEW";
+    box.appendChild(newBadge);
+  }
 
-          setTimeout(() => {
-            box.classList.remove('day-box-locked');
-            box.classList.remove('breaking');
-            box.classList.remove('current-day');
+  // --- CLICK HANDLING ---
+  if(isFuture){
+    // Giorno futuro → tremolio
+    box.addEventListener('click', () => {
+      box.classList.add('shake');
+      setTimeout(() => box.classList.remove('shake'), 400);
+    });
 
-            openPopup('popup'+day.day);
+} else if(isToday){
+  // Giorno corrente → animazione, popup e cambio badge NEW → OPEN
+  box.style.cursor = "pointer";
+  box.addEventListener('click', () => {
+    box.classList.add('breaking');
 
-            if(day.day === 10){
-              document.body.classList.add('bg-2');
-            }
-          }, 400);
-        });
-      } else {
-        // Giorni passati: si aprono normalmente
-        box.addEventListener('click', () => {
-          openPopup('popup'+day.day);
+    setTimeout(() => {
+      box.classList.remove('day-box-locked');
+      box.classList.remove('breaking');
 
-          if(day.day === 10){
-            document.body.classList.add('bg-2');
-          }
-        });
+      // ⭐ Cambia NEW → OPEN
+      const newBadge = box.querySelector(".day-new-badge");
+      if (newBadge) {
+        newBadge.classList.remove("day-new-badge");
+        newBadge.classList.add("day-open-badge");
+        newBadge.textContent = "OPEN";
       }
 
-      wrapper.appendChild(box);
-      return wrapper;
-    }
+      openPopup('popup' + day.day);
 
-    function createPopup(day){
-      const popup = document.createElement('div');
-      popup.className = 'popup';
-      popup.id = 'popup'+day.day;
-      popup.onclick = function(){ closePopup(this); };
+      if(day.day === 10){
+        document.body.classList.add('bg-2');
+      }
+    }, 350);
+  });
 
-      const content = document.createElement('div');
-      content.className = 'popup-content';
-      content.onclick = function(e){ e.stopPropagation(); };
 
-      const close = document.createElement('div');
-      close.className = 'popup-close';
-      close.innerHTML = '&times;';
-      close.onclick = function(e){
-        e.stopPropagation();
-        popup.style.display = 'none';
-      };
+  } else {
+    // Giorno passato → si apre normalmente
+    box.addEventListener('click', () => {
+      openPopup('popup' + day.day);
+      if(day.day === 10){
+        document.body.classList.add('bg-2');
+      }
+    });
+  }
 
-      const label = document.createElement('div');
-      label.className = 'popup-day-label';
-      label.textContent = 'Giorno ' + day.day;
+  wrapper.appendChild(box);
+  return wrapper;
+}
 
-      const img = document.createElement('img');
-      img.src = day.imgBig;
-      img.alt = day.title;
+  function createPopup(day){
+  const popup = document.createElement('div');
+  popup.className = 'popup';
+  popup.id = 'popup'+day.day;
+  popup.onclick = function(){ closePopup(this); };
 
-      const h3 = document.createElement('h3');
-      h3.textContent = day.title;
+  const content = document.createElement('div');
+  content.className = 'popup-content';
+  content.onclick = function(e){ e.stopPropagation(); };
 
-      const p = document.createElement('p');
-      p.textContent = day.text;
+  const close = document.createElement('div');
+  close.className = 'popup-close';
+  close.innerHTML = '&times;';
+  close.onclick = function(e){
+    e.stopPropagation();
+    popup.style.display = 'none';
+  };
 
-      const a = document.createElement('a');
-      a.href = day.link;
-      a.target = '_blank';
-      a.className = 'cta-button';
-      a.textContent = day.ctaLabel;
-      a.style.background = day.ctaColor;
+  const label = document.createElement('div');
+  label.className = 'popup-day-label';
+  label.textContent = 'Giorno ' + day.day;
 
-      // Quando clicchi il pulsante il popup si chiude
-      a.addEventListener('click', () => {
-        popup.style.display = 'none';
-      });
+  // 🔥 GESTIONE VIDEO O IMMAGINE
+  if (day.videoUrl) {
+    // Video YouTube (giorno 25)
+    const iframe = document.createElement('iframe');
+    iframe.src = day.videoUrl;
+    iframe.width = "100%";
+    iframe.height = "230";
+    iframe.style.borderRadius = "16px";
+    iframe.style.border = "none";
+    iframe.allow = "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture";
+    iframe.allowFullscreen = true;
+    content.appendChild(iframe);
 
-      content.appendChild(close);
-      content.appendChild(label);
-      content.appendChild(img);
-      content.appendChild(h3);
-      content.appendChild(p);
-      content.appendChild(a);
-      popup.appendChild(content);
+  } else {
+    // Immagine classica
+    const img = document.createElement('img');
+    img.src = day.imgBig;
+    img.alt = day.title;
+    content.appendChild(img);
+  }
 
-      document.body.appendChild(popup);
-    }
+  const h3 = document.createElement('h3');
+  h3.textContent = day.title;
+
+  const p = document.createElement('p');
+  p.textContent = day.text;
+
+  const a = document.createElement('a');
+  a.href = day.link;
+  a.target = '_blank';
+  a.className = 'cta-button';
+  a.textContent = day.ctaLabel;
+  a.style.background = day.ctaColor;
+
+  a.addEventListener('click', () => {
+    popup.style.display = 'none';
+  });
+
+  content.appendChild(close);
+  content.appendChild(label);
+  content.appendChild(h3);
+  content.appendChild(p);
+  content.appendChild(a);
+  popup.appendChild(content);
+
+  document.body.appendChild(popup);
+}
 
     function renderCalendar(){
       const grid = document.getElementById('calendar');
@@ -546,6 +643,38 @@
     }
 
     renderCalendar();
+    
+// CREA NEVE ❄️
+function createSnow() {
+  const snow = document.createElement("div");
+  snow.classList.add("snowflake");
+  snow.textContent = "❄";
+
+  // posizione casuale
+  snow.style.left = Math.random() * window.innerWidth + "px";
+
+  // dimensione casuale
+  const size = (Math.random() * 12) + 8;
+  snow.style.fontSize = size + "px";
+
+  // durata caduta casuale
+  const duration = (Math.random() * 4) + 3;
+  snow.style.animationDuration = duration + "s";
+
+  document.body.appendChild(snow);
+
+  // elimina fiocco dopo caduta
+  setTimeout(() => {
+    snow.remove();
+  }, duration * 1000);
+}
+
+// genera neve ogni 150ms
+setInterval(createSnow, 150);
+</script>
+
+    
+    
   </script>
 </body>
 </html>
